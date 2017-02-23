@@ -12,10 +12,11 @@ for (var i = 0; i < imgTags.length; i++) {
     }
 }
 
+console.log(found);
+
 parentObj = found.parentNode;
 while(parentObj.getAttribute('name') != 'div') {
     parentObj = parentObj.parentNode;
 }
 
-console.log(found);
 console.log(parentObj);
