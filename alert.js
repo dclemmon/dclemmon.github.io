@@ -21,7 +21,7 @@ console.log(parentObj.nodeType);
 console.log(parentObj.attributes);
 console.log(parentObj.getAttribute("name"));
 
-while( parentObj.getAttribute('name') != 'div') {
+while( parentObj.tagName != 'div') {
     parentObj = parentObj.parentNode;
 }
 
