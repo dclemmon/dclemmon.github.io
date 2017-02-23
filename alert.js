@@ -22,7 +22,7 @@ console.log(parentObj.tagName);
 console.log(parentObj.attributes);
 console.log(parentObj.getAttribute("name"));
 
-while( parentObj.tagName != 'div') {
+while( parentObj.tagName != 'DIV') {
     parentObj = parentObj.parentNode;
 }
 
