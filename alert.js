@@ -16,6 +16,7 @@ console.log(found);
 
 parentObj = found.parentNode;
 
+console.log(parentObj);
 console.log(Object.getOwnPropertyNames(parentObj));
 
 while(parentObj.getAttribute('name') != 'div') {
