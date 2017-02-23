@@ -14,7 +14,10 @@ for (var i = 0; i < imgTags.length; i++) {
 
 console.log(found);
 
-parentObj = found.parentElement;
+parentObj = found.parentNode;
+
+console.log(Object.getOwnPropertyNames(parentObj));
+
 while(parentObj.getAttribute('name') != 'div') {
     parentObj = parentObj.parentElement;
 }
