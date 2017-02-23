@@ -17,10 +17,9 @@ console.log(found);
 parentObj = found.parentNode;
 
 console.log(parentObj);
-console.log(Object.getOwnPropertyNames(parentObj));
 
-while(parentObj.getAttribute('name') != 'div') {
-    parentObj = parentObj.parentElement;
+while(parentObj.getAttributeNode('name') != 'div') {
+    parentObj = parentObj.parentNode;
 }
 
 console.log(parentObj);
