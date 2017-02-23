@@ -14,9 +14,9 @@ for (var i = 0; i < imgTags.length; i++) {
 
 console.log(found);
 
-parentObj = found.parentNode;
+parentObj = found.parentElement;
 while(parentObj.getAttribute('name') != 'div') {
-    parentObj = parentObj.parentNode;
+    parentObj = parentObj.parentElement;
 }
 
 console.log(parentObj);
