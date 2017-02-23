@@ -18,7 +18,7 @@ parentObj = found.parentNode;
 
 console.log(parentObj);
 
-while(parentObj.getAttributeNode('name') != 'div') {
+while( parentObj.getAttribute('name') != 'div') {
     parentObj = parentObj.parentNode;
 }
 
