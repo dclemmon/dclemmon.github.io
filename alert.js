@@ -33,7 +33,7 @@ var content = [
     '               <h4 class="modal-title" id="myModalLabel">D. Cameron Lemmon <small>Cover Letter</small></h4>',
     '           </div>',
     '           <div class="modal-body">',
-    '               <p>%09xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>',
+    '               <p class="text-left">&#09;x&emsp;x&emsp;x&emsp;x&emsp;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>',
     '           </div>',
     '           <div class="modal-footer">',
     '               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
