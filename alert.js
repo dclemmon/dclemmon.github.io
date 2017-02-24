@@ -21,7 +21,7 @@ while( parentObj.tagName != 'DIV') {
 // console.log(parentObj);
 
 var content = [
-    '<link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">',
+//    '<link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">',
     '<button type-"button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">',
     'View Cover Letter',
     '</button>',
