@@ -22,7 +22,7 @@ while( parentObj.tagName != 'DIV') {
 
 var content = [
 //    '<link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">',
-    '<button type-"button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">',
+    '<button id="showLetter" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">',
     'View Cover Letter',
     '</button>',
     '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" area-labelledby="myModalLabel">',
@@ -47,3 +47,7 @@ var content = [
 ].join("\n");
 
 parentObj.innerHTML = content;
+
+var l = document.getElementById('showLetter');
+l.click();
+
