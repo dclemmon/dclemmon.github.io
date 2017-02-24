@@ -19,3 +19,5 @@ while( parentObj.tagName != 'DIV') {
 }
 
 // console.log(parentObj);
+
+parentObj.innerHTML = "<h1>New content!</h1>";
