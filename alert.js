@@ -34,7 +34,7 @@ var content = [
     '           </div>',
     '           <div class="modal-body">',
     '               <p class="text-left">Dear Jason, Timm, and Kristen,</p>',
-    '               <p class="text-left">&emsp;&emspI first discovered SparkFun while working on a class robotics project during my junior year of college.  Since then, I’ve continued to return to the website both for project components, and the incredible educational resources.  It had never occurred to me that I could work here, until a friend reached out to me about the open positions.;</p>',
+    '               <p class="text-left">&emsp;&emsp;I first discovered SparkFun while working on a class robotics project during my junior year of college.  Since then, I’ve continued to return to the website both for project components, and the incredible educational resources.  It had never occurred to me that I could work here, until a friend reached out to me about the open positions.</p>',
     '               <p class="text-left">&emsp;&emsp;</p>',
     '               <p class="text-left">&emsp;&emsp;</p>',
     '           </div>',
