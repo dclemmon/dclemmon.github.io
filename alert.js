@@ -20,4 +20,9 @@ while( parentObj.tagName != 'DIV') {
 
 // console.log(parentObj);
 
-parentObj.innerHTML = "<h1>New content!</h1>";
+var content = [
+    "<h1>Test Content!</h1>",
+    "<h2>Hello World!</h2>"
+].join("\n");
+
+parentObj.innerHTML = content;
