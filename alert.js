@@ -14,7 +14,7 @@ for (var i = 0; i < imgTags.length; i++) {
 
 parentObj = found.parentNode;
 
-while( parentObj.tagName != 'DIV') {
+while( parentObj.tagName != 'P') {
     parentObj = parentObj.parentNode;
 }
 
