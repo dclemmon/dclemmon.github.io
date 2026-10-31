@@ -1,0 +1,171 @@
+{
+  "id": "advent-2026",
+  "title": "Advent Follow-Along",
+  "notice": "Sample content for review. Final activities are coming soon.",
+  "messages": {
+    "beforeTitle": "Advent starts Sunday, November 29",
+    "beforeBody": "Each week brings a few simple things to do together at home. Take a look at Week 1 now, and come back on the first Sunday of Advent.",
+    "afterTitle": "Merry Christmas!",
+    "afterBody": "Thank you for following along this Advent. All the weeks are still here if you'd like to look back."
+  },
+  "weeks": [
+    {
+      "id": "week-1",
+      "kind": "advent",
+      "label": "Week 1",
+      "title": "Hope",
+      "theme": "The prophecy candle",
+      "intro": "Advent begins with waiting and hoping. This week, notice the small signs of light in the dark evenings.",
+      "startDate": "2026-11-29",
+      "endDate": "2026-12-05",
+      "activities": [
+        {
+          "id": "w1-light-candle",
+          "title": "Light the first candle",
+          "description": "Light one candle at dinner (or switch on a flameless one). Take turns naming something you're hoping for.",
+          "scripture": "Isaiah 9:2"
+        },
+        {
+          "id": "w1-hope-jar",
+          "title": "Start a hope jar",
+          "description": "Write or draw a hope on a slip of paper and put it in a jar. Add one each day this week.",
+          "details": "Any jar or box works. Younger children can draw a picture instead of writing. Keep the jar somewhere everyone will see it, and read the slips together on Christmas Eve."
+        },
+        {
+          "id": "w1-read-together",
+          "title": "Read the promise",
+          "description": "Read the short passage together and talk about what it means to wait for something good.",
+          "scripture": "Jeremiah 33:14–16",
+          "link": {
+            "href": "https://www.biblegateway.com/passage/?search=Jeremiah+33%3A14-16",
+            "label": "Read the passage online"
+          }
+        }
+      ]
+    },
+    {
+      "id": "week-2",
+      "kind": "advent",
+      "label": "Week 2",
+      "title": "Peace",
+      "theme": "The Bethlehem candle",
+      "intro": "This week we make room for peace: in our homes, with our neighbors, and in quiet moments.",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-12",
+      "activities": [
+        {
+          "id": "w2-light-candle",
+          "title": "Light two candles",
+          "description": "Light two candles and share one place where you'd like to see more peace.",
+          "scripture": "Luke 1:78–79"
+        },
+        {
+          "id": "w2-quiet-minute",
+          "title": "Take a quiet minute",
+          "description": "Sit together for one quiet minute before bed. Afterwards, share what you noticed."
+        },
+        {
+          "id": "w2-make-peace",
+          "title": "Make peace with someone",
+          "description": "Write a kind note to a friend, neighbor or family member, especially someone you've disagreed with."
+        },
+        {
+          "id": "w2-prepare-way",
+          "title": "Prepare the way",
+          "description": "Tidy one small space together to get ready for guests or for Christmas.",
+          "scripture": "Isaiah 40:3"
+        }
+      ]
+    },
+    {
+      "id": "week-3",
+      "kind": "advent",
+      "label": "Week 3",
+      "title": "Joy",
+      "theme": "The shepherds' candle",
+      "intro": "The pink candle reminds us that joy is near. This week, look for ways to share it.",
+      "startDate": "2026-12-13",
+      "endDate": "2026-12-19",
+      "activities": [
+        {
+          "id": "w3-light-candle",
+          "title": "Light three candles",
+          "description": "Light three candles, including the pink one. Each person shares one thing that made them smile today.",
+          "scripture": "Luke 2:10"
+        },
+        {
+          "id": "w3-sing",
+          "title": "Sing a carol",
+          "description": "Sing a favorite carol together. Bonus: sing it for a neighbor or call a grandparent and sing to them."
+        },
+        {
+          "id": "w3-joy-gift",
+          "title": "Give a surprise",
+          "description": "Do a secret kindness for someone in your family or neighborhood."
+        }
+      ]
+    },
+    {
+      "id": "week-4",
+      "kind": "advent",
+      "label": "Week 4",
+      "title": "Love",
+      "theme": "The angels' candle",
+      "intro": "In the last days before Christmas, we remember that love came down to be with us.",
+      "startDate": "2026-12-20",
+      "endDate": "2026-12-23",
+      "activities": [
+        {
+          "id": "w4-light-candle",
+          "title": "Light four candles",
+          "description": "Light all four candles and name someone who shows you God's love.",
+          "scripture": "John 3:16"
+        },
+        {
+          "id": "w4-serve",
+          "title": "Love in action",
+          "description": "Choose one way to help others this week, such as donating food, a warm coat or a toy.",
+          "details": "Ask at church about this year's collection drives, or pick a local food bank or shelter together as a family."
+        },
+        {
+          "id": "w4-mary-story",
+          "title": "Read Mary's story",
+          "description": "Read about the angel's visit to Mary and talk about how she said yes.",
+          "scripture": "Luke 1:26–38"
+        }
+      ]
+    },
+    {
+      "id": "christmas",
+      "kind": "christmas",
+      "label": "Christmas",
+      "title": "Christ is born",
+      "theme": "The Christ candle",
+      "intro": "The waiting is over. Celebrate the birth of Jesus together.",
+      "startDate": "2026-12-24",
+      "endDate": "2026-12-25",
+      "activities": [
+        {
+          "id": "xmas-eve-story",
+          "title": "Read the Christmas story",
+          "description": "On Christmas Eve, read the story of Jesus' birth together, then open the hope jar from Week 1.",
+          "date": "2026-12-24",
+          "scripture": "Luke 2:1–20"
+        },
+        {
+          "id": "xmas-christ-candle",
+          "title": "Light the Christ candle",
+          "description": "Light all five candles. Say a short thank-you prayer for the gift of Jesus.",
+          "date": "2026-12-25",
+          "scripture": "John 1:14"
+        },
+        {
+          "id": "xmas-birthday",
+          "title": "A birthday for Jesus",
+          "description": "Share a special treat and sing \"Happy Birthday\" to Jesus.",
+          "date": "2026-12-25"
+        }
+      ]
+    }
+  ]
+}

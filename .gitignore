@@ -1,0 +1,6 @@
+node_modules/
+dist/
+dev-dist/
+public/advent.ics
+.DS_Store
+*.local

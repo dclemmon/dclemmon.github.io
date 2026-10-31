@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Advent Follow-Along</title>
+  <rect width="512" height="512" rx="96" fill="#4a2f7a"/>
+  <!-- wreath -->
+  <ellipse cx="256" cy="372" rx="168" ry="44" fill="none" stroke="#7fb08a" stroke-width="28"/>
+  <!-- candles -->
+  <rect x="140" y="230" width="40" height="130" rx="6" fill="#efe6ff"/>
+  <rect x="204" y="200" width="40" height="160" rx="6" fill="#efe6ff"/>
+  <rect x="268" y="200" width="40" height="160" rx="6" fill="#f6c6dc"/>
+  <rect x="332" y="230" width="40" height="130" rx="6" fill="#efe6ff"/>
+  <!-- flames -->
+  <path d="M160 222c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
+  <path d="M224 192c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
+  <path d="M288 192c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
+  <path d="M352 222c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
+</svg>
