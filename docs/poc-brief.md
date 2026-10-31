@@ -28,15 +28,15 @@ Goal: a simple, working demo with placeholder content, deployable to a personal 
 
 ## Acceptance checks
 
-- [ ] `npm test` passes, including schedule tests for: Nov 28, Nov 29, Dec 5, Dec 6, Dec 24, Dec 25, Dec 26, and a `?date=` override.
-- [ ] `npm run build` succeeds and fails if the content file is invalid (missing field, duplicate ID).
-- [ ] Opening the deployed URL lands on the correct week; `?date=2026-12-10` lands on Week 2.
-- [ ] Check-offs survive a reload; private browsing works without errors (check-offs just don't persist).
-- [ ] Editing an activity's title in the content file does not clear its check-off.
-- [ ] Usable at 360px wide and on a desktop browser; fully operable by keyboard.
-- [ ] Lighthouse accessibility score ≥ 95; no console errors.
-- [ ] With `prefers-reduced-motion: reduce`, no animations play.
-- [ ] No network requests to any origin other than the app's own (verify in devtools).
+- [x] `npm test` passes, including schedule tests for: Nov 28, Nov 29, Dec 5, Dec 6, Dec 24, Dec 25, Dec 26, and a `?date=` override.
+- [x] `npm run build` succeeds and fails if the content file is invalid (missing field, duplicate ID).
+- [x] Opening the deployed URL lands on the correct week; `?date=2026-12-10` lands on Week 2.
+- [ ] Check-offs survive a reload; private browsing works without errors (check-offs just don't persist). _(Reload persistence verified; private browsing covered by unit tests, still to try in a real private window.)_
+- [x] Editing an activity's title in the content file does not clear its check-off. _(unit tested)_
+- [x] Usable at 360px wide and on a desktop browser; fully operable by keyboard.
+- [x] Lighthouse accessibility score ≥ 95; no console errors. _(100 in incognito; no console errors from the app)_
+- [ ] With `prefers-reduced-motion: reduce`, no animations play. _(CSS in place; still to verify with the OS setting on.)_
+- [x] No network requests to any origin other than the app's own (verify in devtools).
 - [ ] `advent.ics` imports cleanly into Apple Calendar and Google Calendar.
 - [ ] "Add to Home Screen" works on an iPhone and an Android phone.
 
