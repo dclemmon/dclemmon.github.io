@@ -9,6 +9,23 @@ html {
   text-size-adjust: 100%;
 }
 
+/*
+  While a modal dialog (week sheet, reminders, reset) is open, the page behind it must
+  not scroll. Without this, a sheet too short to scroll passes swipes through to the
+  page on iOS. scrollbar-gutter keeps desktop layouts from shifting when it locks.
+*/
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+dialog {
+  overscroll-behavior: contain;
+}
+
 body {
   margin: 0;
   background: var(--color-bg);
