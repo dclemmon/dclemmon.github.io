@@ -8,6 +8,7 @@ import {
   eventsBetween,
   eventsInWeek,
   getFeed,
+  nextEvent,
   upcomingEvents,
 } from './events.ts';
 import { getWeekById } from './schedule.ts';
@@ -69,6 +70,12 @@ describe('choosing events to show', () => {
       (o) => o.event.id === 'cookie-decorating',
     );
     expect(cancelled?.event.cancelled).toBe(true);
+  });
+
+  it('the next event skips cancelled dates', () => {
+    expect(nextEvent(season, '2026-12-09')?.key).toBe('pageant-rehearsal@2026-12-09');
+    expect(nextEvent(season, '2026-12-10')?.key).toBe('pageant-rehearsal@2026-12-16');
+    expect(nextEvent(season, '2026-12-26')).toBeUndefined();
   });
 
   it('finds the events in a week', () => {

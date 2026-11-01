@@ -45,6 +45,11 @@ export function upcomingEvents(season: Season, today: string, limit = Infinity):
     .slice(0, limit);
 }
 
+/** The next event that is still happening (cancelled dates are skipped), if any. */
+export function nextEvent(season: Season, today: string): EventOccurrence | undefined {
+  return upcomingEvents(season, today).find((o) => !o.event.cancelled);
+}
+
 /** Occurrences between two dates, inclusive. */
 export function eventsBetween(season: Season, start: string, end: string): EventOccurrence[] {
   return allOccurrences(season).filter((o) => o.date >= start && o.date <= end);

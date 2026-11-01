@@ -46,8 +46,9 @@
     padding: var(--space-3) 0;
   }
 
+  /* Rule between events; a list shown on the page background sets --event-rule. */
   .event + .event {
-    border-top: 2px solid var(--color-bg);
+    border-top: 2px solid var(--event-rule, var(--color-bg));
   }
 
   .when {

@@ -4,12 +4,12 @@
   import EventList from '../components/EventList.svelte';
   import InstallTip from '../components/InstallTip.svelte';
   import Modal from '../components/Modal.svelte';
-  import Progress from '../components/Progress.svelte';
   import WeekSheet from '../components/WeekSheet.svelte';
   import WeekChips from '../components/WeekChips.svelte';
+  import WeekGlance from '../components/WeekGlance.svelte';
   import Wreath from '../components/Wreath.svelte';
-  import { formatRangeCompact } from '../core/dates.ts';
-  import { eventsInWeek, upcomingEvents } from '../core/events.ts';
+  import { formatRangeCompact, formatShortDate, formatTime } from '../core/dates.ts';
+  import { eventsInWeek, nextEvent, upcomingEvents } from '../core/events.ts';
   import { getWeekById, litCandles, nextWeek } from '../core/schedule.ts';
   import { weekStatuses } from '../core/summary.ts';
   import type { ViewProps } from './types.ts';
@@ -20,7 +20,6 @@
   const week = $derived(getWeekById(season, seasonState.currentWeekId) ?? season.weeks[0]);
   const lit = $derived(litCandles(season, seasonState.today));
   const statuses = $derived(weekStatuses(season, seasonState, (id) => progress.isDone(id)));
-  const status = $derived(statuses.find((s) => s.weekId === week.id));
 
   const buttonLabel = $derived(
     seasonState.phase === 'before'
@@ -107,14 +106,18 @@
   });
 
   const upcoming = $derived(upcomingEvents(season, seasonState.today));
-  const COMING_UP = 3;
+  // One quiet line on the home page; the full list (cancellations included) is a tap away.
+  const next = $derived(nextEvent(season, seasonState.today));
 </script>
 
 <main class="page">
   <div class="title">
     {#if seasonState.phase === 'during'}
-      <p class="dates">{formatRangeCompact(week.startDate, week.endDate)}</p>
+      <p class="dates">
+        {formatRangeCompact(week.startDate, week.endDate)}{week.theme ? ` · ${week.theme}` : ''}
+      </p>
       <h2>{week.label} · {week.title}</h2>
+      <p class="intro">{week.intro}</p>
     {:else if seasonState.phase === 'before'}
       <h2>{season.messages.beforeTitle}</h2>
       <p class="intro">{season.messages.beforeBody}</p>
@@ -126,27 +129,36 @@
 
   <Wreath {lit} />
 
-  {#if status}
-    <Progress
-      variant="dots"
-      done={status.done}
-      total={status.total}
-      suffix={seasonState.phase === 'during' ? 'done this week' : `done in ${week.label}`}
-    />
-  {/if}
-
   <WeekChips weeks={season.weeks} {statuses} onOpen={openWeek} />
 
-  <button class="btn btn-primary" type="button" onclick={(e) => openWeek(week.id, e.currentTarget)}>
-    {buttonLabel}
-  </button>
+  <WeekGlance
+    {week}
+    isDone={(id) => progress.isDone(id)}
+    suffix={seasonState.phase === 'during' ? 'done this week' : `done in ${week.label}`}
+  >
+    <button
+      class="btn btn-primary"
+      type="button"
+      onclick={(e) => openWeek(week.id, e.currentTarget)}
+    >
+      {buttonLabel}
+    </button>
+  </WeekGlance>
 
   {#if upcoming.length > 0}
-    <section class="coming-up" aria-labelledby="coming-up">
-      <h3 id="coming-up">Coming up</h3>
-      <EventList events={upcoming.slice(0, COMING_UP)} feeds={season.feeds} />
+    <section class="church" aria-labelledby="next-at-church">
+      {#if next}
+        <p>
+          <span id="next-at-church" class="church-label">Next at church:</span>
+          <strong>{next.event.title}</strong>,
+          {formatShortDate(next.date)}{#if next.event.start},
+            <span class="nowrap">{formatTime(next.event.start)}</span>{/if}
+        </p>
+      {:else}
+        <h3 id="next-at-church" class="church-label">At church</h3>
+      {/if}
       <button class="link" type="button" onclick={() => openInfo('events')}>
-        See all events
+        See all church events
       </button>
     </section>
   {/if}
@@ -272,21 +284,28 @@
     color: var(--color-accent-hover);
   }
 
-  .coming-up {
+  /* Church events stay a quiet line under the devotion, not a second card. */
+  .church {
     display: flex;
     flex-direction: column;
-    padding: var(--space-4) var(--space-4) var(--space-1);
-    border-radius: var(--radius-card);
-    background: var(--color-surface);
+    align-items: flex-start;
+    padding-top: var(--space-3);
+    border-top: 2px solid var(--color-border);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
-  .coming-up h3 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-heavy);
+  .church strong {
+    color: var(--color-text);
   }
 
-  .coming-up .link {
-    align-self: flex-start;
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  .church-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
   }
 
   .all-events {

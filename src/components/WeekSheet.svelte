@@ -77,12 +77,10 @@
       {/if}
     </div>
 
-    {#if churchEvents.length > 0}
-      <section class="church" aria-labelledby="sheet-church">
-        <h3 id="sheet-church" class="church-title">This week at church</h3>
-        <EventList events={churchEvents} {feeds} />
-      </section>
-    {/if}
+    <div class="intro">
+      {#if shown.theme}<p class="theme">{shown.theme}</p>{/if}
+      <p>{shown.intro}</p>
+    </div>
 
     <ul class="activities">
       {#each activities as activity (activity.id)}
@@ -127,6 +125,13 @@
       {/each}
     </ul>
 
+    {#if churchEvents.length > 0}
+      <section class="church" aria-labelledby="sheet-church">
+        <h3 id="sheet-church" class="church-title">This week at church</h3>
+        <EventList events={churchEvents} {feeds} />
+      </section>
+    {/if}
+
     {#snippet actions()}
       {#if next && onNext}
         <button class="btn btn-primary next" type="button" onclick={goNext}>
@@ -153,15 +158,27 @@
     stroke-linejoin: round;
   }
 
+  .intro {
+    color: var(--color-text-muted);
+  }
+
+  .theme {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  /* Church events follow the activities as a quiet note on the sheet background. */
   .church {
-    padding: var(--space-3) var(--space-4) var(--space-1);
-    border-radius: var(--radius-card);
-    background: var(--color-surface);
+    --event-rule: var(--color-border);
+    margin-top: var(--space-2);
+    padding: var(--space-3) var(--space-1) 0;
+    border-top: 2px solid var(--color-border);
   }
 
   .church-title {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-heavy);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
   }
 
   .activities {
