@@ -1,11 +1,16 @@
 <script lang="ts">
+  interface Props {
+    /** Show the instructions directly (e.g. inside a dialog) instead of in a collapsible panel. */
+    inline?: boolean;
+  }
+  let { inline = false }: Props = $props();
+
   const base = import.meta.env.BASE_URL;
   const httpsUrl = new URL(`${base}advent.ics`, window.location.href).href;
   const webcalUrl = httpsUrl.replace(/^https?:/, 'webcal:');
 </script>
 
-<details class="panel">
-  <summary>Add weekly reminders to my calendar</summary>
+{#snippet content()}
   <div class="content">
     <p>Get a reminder each Sunday of Advent, plus Christmas Eve, in your own calendar app.</p>
     <p class="links">
@@ -23,7 +28,16 @@
       </li>
     </ul>
   </div>
-</details>
+{/snippet}
+
+{#if inline}
+  {@render content()}
+{:else}
+  <details class="panel">
+    <summary>Add weekly reminders to my calendar</summary>
+    {@render content()}
+  </details>
+{/if}
 
 <style>
   .panel summary {

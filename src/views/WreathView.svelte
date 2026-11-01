@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
+  import CalendarLinks from '../components/CalendarLinks.svelte';
+  import InstallTip from '../components/InstallTip.svelte';
+  import Modal from '../components/Modal.svelte';
   import Progress from '../components/Progress.svelte';
   import WeekSheet from '../components/WeekSheet.svelte';
   import WeekChips from '../components/WeekChips.svelte';
@@ -28,16 +32,60 @@
   let opener: HTMLElement | null = $state(null);
   const sheetWeek = $derived(sheetWeekId ? (getWeekById(season, sheetWeekId) ?? null) : null);
 
+  /*
+    Android Back: opening the sheet adds one history entry, so Back closes the sheet
+    instead of leaving the app. "Next" replaces that entry, so one Back always closes it.
+  */
+  const SHEET_STATE = 'advent-sheet';
+  let pushedHistory = false;
+
   function openWeek(id: string, from: HTMLElement | null = null) {
     opener = from;
+    onSelectWeek(id); // may tidy the URL (drops a #week hash) before we add our entry
+    if (sheetWeekId === null) {
+      history.pushState({ [SHEET_STATE]: id }, '');
+      pushedHistory = true;
+    } else {
+      history.replaceState({ [SHEET_STATE]: id }, '');
+    }
     sheetWeekId = id;
-    onSelectWeek(id);
   }
 
-  // A #week-id link (e.g. from a calendar reminder) opens that week's sheet.
+  function showNextWeek(id: string) {
+    sheetWeekId = id;
+    onSelectWeek(id);
+    history.replaceState({ [SHEET_STATE]: id }, '');
+  }
+
+  function onSheetClosed() {
+    sheetWeekId = null;
+    // Closed with the button, Escape or the backdrop: remove the entry we added.
+    if (pushedHistory) {
+      pushedHistory = false;
+      history.back();
+    }
+  }
+
   $effect(() => {
-    if (linkedWeek) openWeek(linkedWeek.id);
+    const onPop = () => {
+      // Back (or a swipe) while the sheet is open: just close it.
+      if (sheetWeekId !== null && pushedHistory) {
+        pushedHistory = false;
+        sheetWeekId = null;
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
   });
+
+  // A #week-id link (e.g. from a calendar reminder) opens that week's sheet. Only a new
+  // link should re-run this, not the sheet state openWeek reads, hence untrack.
+  $effect(() => {
+    const link = linkedWeek;
+    if (link) untrack(() => openWeek(link.id));
+  });
+
+  let infoDialog: 'reminders' | 'install' | null = $state(null);
 </script>
 
 <main class="page">
@@ -73,9 +121,15 @@
 
   <footer class="footer">
     <p>Check marks stay on this device.</p>
+    <button class="link" type="button" onclick={() => (infoDialog = 'reminders')}>
+      Add reminders
+    </button>
     {#if !progress.isPersistent}
-      <p>This browser isn't saving them, so they'll clear when you close this page.</p>
+      <p class="wide">This browser isn't saving them, so they'll clear when you close this page.</p>
     {/if}
+    <button class="link" type="button" onclick={() => (infoDialog = 'install')}>
+      Add to Home Screen
+    </button>
   </footer>
 </main>
 
@@ -83,14 +137,23 @@
   week={sheetWeek}
   isDone={(id) => progress.isDone(id)}
   onToggle={(id, d) => progress.setDone(id, d)}
-  onclose={() => (sheetWeekId = null)}
+  onclose={onSheetClosed}
   {opener}
   next={sheetWeekId ? nextWeek(season, sheetWeekId) : undefined}
-  onNext={(id) => {
-    sheetWeekId = id;
-    onSelectWeek(id);
-  }}
+  onNext={showNextWeek}
 />
+
+<Modal open={infoDialog === 'reminders'} title="Add reminders" onclose={() => (infoDialog = null)}>
+  <CalendarLinks inline />
+</Modal>
+
+<Modal
+  open={infoDialog === 'install'}
+  title="Add to Home Screen"
+  onclose={() => (infoDialog = null)}
+>
+  <InstallTip inline />
+</Modal>
 
 <style>
   .page {
@@ -130,5 +193,26 @@
     margin-top: var(--space-2);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+  }
+
+  .wide {
+    flex-basis: 100%;
+  }
+
+  .link {
+    min-height: var(--tap-min);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+  }
+
+  .link:hover {
+    color: var(--color-accent-hover);
   }
 </style>

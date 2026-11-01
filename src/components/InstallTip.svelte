@@ -1,9 +1,12 @@
 <script lang="ts">
-  // Static tip; no props.
+  interface Props {
+    /** Show the tip directly (e.g. inside a dialog) instead of in a collapsible panel. */
+    inline?: boolean;
+  }
+  let { inline = false }: Props = $props();
 </script>
 
-<details class="panel">
-  <summary>Add this page to my Home Screen</summary>
+{#snippet content()}
   <div class="content">
     <p>
       <strong>iPhone or iPad (Safari):</strong> tap the Share button (a square with an arrow), then “Add
@@ -18,7 +21,16 @@
       there.
     </p>
   </div>
-</details>
+{/snippet}
+
+{#if inline}
+  {@render content()}
+{:else}
+  <details class="panel">
+    <summary>Add this page to my Home Screen</summary>
+    {@render content()}
+  </details>
+{/if}
 
 <style>
   .panel summary {

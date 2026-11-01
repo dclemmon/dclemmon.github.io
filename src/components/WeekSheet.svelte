@@ -22,7 +22,14 @@
   }
   let { week, isDone, onToggle, onclose, opener, next, onNext }: Props = $props();
 
-  const activities = $derived(week ? sortActivities(week.activities) : []);
+  // Keep showing the last week while the dialog closes (e.g. after Android Back), so the
+  // close goes through the native <dialog> and focus returns to the opener.
+  let shown = $state<Week | null>(null);
+  $effect.pre(() => {
+    if (week) shown = week;
+  });
+
+  const activities = $derived(shown ? sortActivities(shown.activities) : []);
   const complete = $derived(activities.length > 0 && activities.every((a) => isDone(a.id)));
 
   let heading: HTMLHeadingElement | undefined = $state();
@@ -38,11 +45,11 @@
   }
 </script>
 
-{#if week}
+{#if shown}
   <Modal
     open={week !== null}
     variant="sheet"
-    title="{week.label} · {week.title}"
+    title="{shown.label} · {shown.title}"
     returnTo={opener}
     {onclose}
     bind:heading
@@ -50,7 +57,7 @@
   >
     <div role="status">
       {#if complete}
-        <Celebration total={activities.length} message={week.doneMessage} />
+        <Celebration total={activities.length} message={shown.doneMessage} />
       {/if}
     </div>
 
