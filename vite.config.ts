@@ -40,7 +40,7 @@ export default defineConfig({
       workbox: {
         // Hashed JS/CSS and icons are precached. HTML is NOT precached so content fixes
         // show up on the next online visit (network-first below).
-        globPatterns: ['**/*.{js,css,svg,png,ico,webp}'],
+        globPatterns: ['**/*.{js,css,svg,png,ico,webp,woff2}'],
         navigateFallback: null,
         cleanupOutdatedCaches: true,
         runtimeCaching: [

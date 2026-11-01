@@ -1,0 +1,14 @@
+/*
+  Baloo 2, self-hosted (no third-party requests at runtime).
+  One variable font file, latin subset, weights 400–800.
+  Source: @fontsource-variable/baloo-2@5.3.0 (files/baloo-2-latin-wght-normal.woff2).
+  License: SIL Open Font License 1.1, see ./fonts/OFL.txt.
+  Vite bundles and hashes the file, so it is precached with the other assets.
+*/
+@font-face {
+  font-family: 'Baloo 2';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('./fonts/baloo-2-latin-wght-normal.woff2') format('woff2');
+}
