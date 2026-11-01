@@ -23,6 +23,11 @@
      * opened (Safari doesn't focus buttons on click, so callers can pass the opener).
      */
     returnTo?: HTMLElement | null;
+    /**
+     * Put focus on the title instead of the Close button when it opens. Use for long,
+     * read-first dialogs, so they open at the top rather than scrolled to the Close button.
+     */
+    focusTitle?: boolean;
   }
   let {
     open,
@@ -35,6 +40,7 @@
     heading = $bindable(),
     body = $bindable(),
     returnTo,
+    focusTitle = false,
   }: Props = $props();
 
   let dialog: HTMLDialogElement | undefined = $state();
@@ -46,6 +52,10 @@
     if (open && !dialog.open) {
       returnFocus = returnTo ?? (document.activeElement as HTMLElement | null);
       dialog.showModal();
+      if (focusTitle) {
+        heading?.focus();
+        dialog.scrollTop = 0;
+      }
     } else if (!open && dialog.open) {
       dialog.close();
     }
@@ -94,7 +104,7 @@
         {#if actions}{@render actions()}{/if}
         {#if variant === 'dialog'}
           <!-- svelte-ignore a11y_autofocus -->
-          <button class="btn" type="button" autofocus onclick={() => dialog?.close()}
+          <button class="btn" type="button" autofocus={!focusTitle} onclick={() => dialog?.close()}
             >{closeLabel}</button
           >
         {/if}

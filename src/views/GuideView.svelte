@@ -106,7 +106,7 @@
         >Reset my progress</button
       >
     </p>
-    <CalendarLinks />
+    <CalendarLinks feeds={season.feeds} />
     <InstallTip />
   </footer>
 </div>

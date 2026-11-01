@@ -85,7 +85,7 @@
     if (link) untrack(() => openWeek(link.id));
   });
 
-  let infoDialog: 'reminders' | 'install' | null = $state(null);
+  let infoDialog: 'calendar' | 'install' | null = $state(null);
 </script>
 
 <main class="page">
@@ -125,8 +125,8 @@
         This browser isn't saving them, so they'll clear when you close this page.{/if}
     </p>
     <div class="links">
-      <button class="link" type="button" onclick={() => (infoDialog = 'reminders')}>
-        Add reminders
+      <button class="link" type="button" onclick={() => (infoDialog = 'calendar')}>
+        Add to calendar
       </button>
       <button class="link" type="button" onclick={() => (infoDialog = 'install')}>
         Add to Home Screen
@@ -145,13 +145,19 @@
   onNext={showNextWeek}
 />
 
-<Modal open={infoDialog === 'reminders'} title="Add reminders" onclose={() => (infoDialog = null)}>
-  <CalendarLinks inline />
+<Modal
+  open={infoDialog === 'calendar'}
+  title="Add to my calendar"
+  focusTitle
+  onclose={() => (infoDialog = null)}
+>
+  <CalendarLinks feeds={season.feeds} inline />
 </Modal>
 
 <Modal
   open={infoDialog === 'install'}
   title="Add to Home Screen"
+  focusTitle
   onclose={() => (infoDialog = null)}
 >
   <InstallTip inline />
