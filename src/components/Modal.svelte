@@ -138,6 +138,23 @@
   .sheet[open] {
     display: flex;
     flex-direction: column;
+    animation: slide-up var(--motion-base) ease-out;
+  }
+
+  .sheet[open]::backdrop {
+    animation: scrim-in var(--motion-base) ease-out;
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
+  @keyframes scrim-in {
+    from {
+      opacity: 0;
+    }
   }
 
   @keyframes fade-in {
@@ -148,7 +165,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    dialog[open] {
+    dialog[open],
+    dialog[open]::backdrop {
       animation: none;
     }
   }

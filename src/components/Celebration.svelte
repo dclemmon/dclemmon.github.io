@@ -36,6 +36,37 @@
     padding: var(--space-4);
     border-radius: var(--radius-card);
     background: var(--color-celebrate-bg);
+    animation: pop var(--motion-base) cubic-bezier(0.2, 1.4, 0.4, 1);
+  }
+
+  .star {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: twinkle 1.2s ease-in-out 2;
+  }
+
+  .star + .star {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+  }
+
+  @keyframes twinkle {
+    50% {
+      transform: scale(1.4) rotate(20deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner,
+    .star {
+      animation: none;
+    }
   }
 
   .art {

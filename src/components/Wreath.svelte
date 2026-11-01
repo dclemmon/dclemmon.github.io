@@ -163,4 +163,84 @@
   .star-soft {
     fill: var(--wreath-star-soft);
   }
+
+  /*
+    Motion: lit candles fade in one after another, then their flames flicker gently.
+    The end state is the static rules above, so with no animation everything still shows.
+  */
+  .candle.lit .glow {
+    animation: glow-in var(--motion-slow) ease-out backwards;
+    animation-delay: var(--light-delay, 0ms);
+  }
+
+  .candle.lit .flame {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: flame-in var(--motion-slow) ease-out backwards;
+    animation-delay: var(--light-delay, 0ms);
+  }
+
+  .candle.lit .flame-outer,
+  .candle.lit .flame-core {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: flicker var(--flicker, 2.8s) ease-in-out infinite;
+    animation-delay: calc(var(--light-delay, 0ms) + var(--motion-slow));
+  }
+
+  #candle-1 {
+    --light-delay: 0ms;
+    --flicker: 2.6s;
+  }
+  #candle-2 {
+    --light-delay: 150ms;
+    --flicker: 3.1s;
+  }
+  #candle-3 {
+    --light-delay: 300ms;
+    --flicker: 2.8s;
+  }
+  #candle-4 {
+    --light-delay: 450ms;
+    --flicker: 3.3s;
+  }
+  #candle-christ {
+    --light-delay: 600ms;
+    --flicker: 2.9s;
+  }
+
+  @keyframes glow-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes flame-in {
+    from {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+  }
+
+  @keyframes flicker {
+    0%,
+    100% {
+      transform: scale(1, 1) rotate(0deg);
+    }
+    30% {
+      transform: scale(0.96, 1.05) rotate(-2deg);
+    }
+    60% {
+      transform: scale(1.03, 0.97) rotate(1.5deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .candle.lit .glow,
+    .candle.lit .flame,
+    .candle.lit .flame-outer,
+    .candle.lit .flame-core {
+      animation: none;
+    }
+  }
 </style>
