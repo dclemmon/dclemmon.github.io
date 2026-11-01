@@ -62,10 +62,11 @@
   .pill {
     min-height: var(--tap-min);
     padding: var(--space-1) var(--space-3);
-    border: 2px solid var(--color-border-strong);
-    border-radius: 999px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
     background: var(--color-surface);
     color: var(--color-text);
+    font-weight: var(--font-weight-medium);
     cursor: pointer;
   }
 
@@ -77,7 +78,7 @@
     border-color: var(--color-accent);
     background: var(--color-accent);
     color: var(--color-on-accent);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
   }
 
   .now {

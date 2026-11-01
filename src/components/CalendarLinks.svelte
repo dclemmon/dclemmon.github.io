@@ -30,7 +30,8 @@
     min-height: var(--tap-min);
     display: flex;
     align-items: center;
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-accent);
     cursor: pointer;
   }
 

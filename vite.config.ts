@@ -3,7 +3,9 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { VitePWA } from 'vite-plugin-pwa';
 import { basePath } from './scripts/site.ts';
 
-const THEME = '#4a2f7a';
+// The manifest can't read CSS variables, so these mirror --color-bg in src/theme/tokens.css.
+const THEME = '#f4eef8';
+const BACKGROUND = '#f4eef8';
 
 export default defineConfig({
   // "/" for a domain/subdomain root; set BASE_PATH=/sub/ to serve from a sub-path.
@@ -15,14 +17,14 @@ export default defineConfig({
       registerType: 'autoUpdate',
       injectRegister: 'script-defer',
       manifest: {
-        name: 'Advent Follow-Along',
+        name: 'Advent Devotional',
         short_name: 'Advent',
         description: 'Weekly Advent activities for families at home.',
         start_url: '.',
         scope: '.',
         display: 'standalone',
         theme_color: THEME,
-        background_color: '#faf8f5',
+        background_color: BACKGROUND,
         icons: [
           { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },

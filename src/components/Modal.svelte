@@ -63,18 +63,18 @@
     max-height: min(100% - 2 * var(--space-4), 48rem);
     padding: 0;
     border: none;
-    border-radius: var(--radius);
-    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    background: var(--color-bg);
     color: var(--color-text);
     box-shadow: var(--shadow);
   }
 
   dialog::backdrop {
-    background: var(--color-backdrop);
+    background: var(--color-scrim);
   }
 
   dialog[open] {
-    animation: fade-in var(--duration) ease-out;
+    animation: fade-in var(--motion-base) ease-out;
   }
 
   @keyframes fade-in {

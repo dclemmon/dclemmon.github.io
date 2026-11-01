@@ -156,15 +156,15 @@
   }
 
   h1 {
-    font-size: var(--text-2xl);
-    color: var(--color-accent);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
   }
 
   .notice {
     padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-sm);
-    background: var(--color-notice-bg);
-    color: var(--color-notice-text);
+    border-radius: var(--radius-chip);
+    background: var(--color-celebrate-bg);
+    color: var(--color-text);
     font-size: var(--text-sm);
   }
 
@@ -179,8 +179,8 @@
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-5);
-    border-radius: var(--radius);
-    background: var(--color-accent-soft);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
   }
 
   .banner h2 {
@@ -200,11 +200,8 @@
   }
 
   .eyebrow {
-    font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
   }
 
   #week-heading {
@@ -212,7 +209,7 @@
   }
 
   .theme {
-    font-style: italic;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
   }
 

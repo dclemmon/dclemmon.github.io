@@ -19,21 +19,20 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    min-height: var(--tap-min);
-    padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
-    border: 2px solid var(--color-border-strong);
-    border-radius: var(--radius-sm);
+    min-height: var(--tap-kid);
+    padding: var(--space-1) var(--space-5) var(--space-1) var(--space-3);
+    border: 2px solid var(--color-accent);
+    border-radius: var(--radius-pill);
     background: var(--color-surface);
     color: var(--color-text);
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     cursor: pointer;
     user-select: none;
   }
 
   .check.checked {
     border-color: var(--color-done);
-    background: var(--color-done-soft);
-    color: var(--color-done);
+    background: var(--color-done-bg);
   }
 
   .check:has(input:focus-visible) {

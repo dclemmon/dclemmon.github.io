@@ -42,6 +42,6 @@
   img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-chip);
   }
 </style>

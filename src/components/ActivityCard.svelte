@@ -35,34 +35,38 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
-    border: 1px solid var(--color-border);
-    border-left: 6px solid var(--color-accent);
-    border-radius: var(--radius);
+    padding: var(--space-4) var(--space-5);
+    border: 2px solid var(--color-surface);
+    border-radius: var(--radius-card);
     background: var(--color-surface);
     box-shadow: var(--shadow);
   }
 
   .card.done {
-    border-left-color: var(--color-done);
+    border-color: var(--color-done-bg);
   }
 
   h3 {
     font-size: var(--text-lg);
+    font-weight: var(--font-weight-bold);
+  }
+
+  p {
+    color: var(--color-text-muted);
   }
 
   .date {
     font-size: var(--text-sm);
-    font-weight: 600;
+    font-weight: var(--font-weight-medium);
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
 
   .scripture {
-    color: var(--color-text-muted);
+    color: var(--color-accent);
     font-size: var(--text-sm);
-    font-style: italic;
+    font-weight: var(--font-weight-bold);
   }
 
   .row {

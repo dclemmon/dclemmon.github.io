@@ -1,82 +1,94 @@
 /*
- * Design tokens. Placeholder palette until branding is chosen.
- * Components use only these variables — never hard-coded colors.
- * Text colors meet WCAG AA (4.5:1) on --color-bg and --color-surface.
- */
+  Theme tokens: direction C "Soft storybook" (source: docs/design/tokens.css).
+  Components use these, never raw hex. Light theme only for now.
+  Sizes are rem (16px = 1rem) so layout follows browser and OS text-size settings.
+  Font: Baloo 2 (SIL Open Font License), self-hosted; see fonts.css.
+*/
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
-  /* Color */
-  --color-bg: #faf8f5;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f2eef7;
-  --color-text: #1f1d24;
-  --color-text-muted: #514c5a;
-  --color-border: #d9d3e0;
-  --color-border-strong: #6d6578;
-  --color-accent: #4a2f7a;
-  --color-accent-hover: #3b2463;
+  /* Type */
+  --font-body: 'Baloo 2', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-weight-regular: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;
+  --text-sm: 0.9375rem; /* 15px: secondary labels */
+  --text-base: 1.0625rem; /* 17px: body */
+  --text-lg: 1.1875rem; /* 19px: card titles, buttons */
+  --text-xl: 1.375rem; /* 22px: celebration headline */
+  --text-2xl: 2.125rem; /* 34px: week title */
+  --line-tight: 1.1;
+  --line-body: 1.4;
+
+  /* Surfaces */
+  --color-bg: #f4eef8; /* lilac paper */
+  --color-surface: #ffffff; /* cards, switcher */
+  --color-surface-muted: #ede5f4; /* future-week chips */
+  --color-border: #e4d8ef;
+  --color-scrim: rgba(58, 46, 82, 0.55); /* behind the week sheet */
+
+  /* Text */
+  --color-text: #3a2e52;
+  --color-text-muted: #5f5378;
+
+  /* Actions */
+  --color-accent: #6a4aa8; /* primary button, links, scripture refs */
+  --color-accent-hover: #4f3485;
   --color-on-accent: #ffffff;
-  --color-accent-soft: #ece4f7;
-  --color-done: #1f6b3a;
-  --color-done-soft: #e3f2e7;
-  --color-notice-bg: #fff4d6;
-  --color-notice-text: #4d3800;
-  --color-focus: #1a5fd0;
-  --color-backdrop: rgb(20 16 28 / 0.55);
+  --color-accent-soft: #e9dff7; /* selected segment in the view switcher */
+  --color-current: #a98bd6; /* current-week chip border */
 
-  /* Type — rem so it scales with browser/OS text size */
-  --font-body:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
-  --font-heading: Georgia, 'Times New Roman', serif;
-  --text-sm: 1rem;
-  --text-base: 1.125rem;
-  --text-lg: 1.375rem;
-  --text-xl: 1.75rem;
-  --text-2xl: 2.125rem;
-  --leading: 1.55;
-  --leading-tight: 1.2;
+  /* Status */
+  --color-done-bg: #ddefe2; /* completed-week chip */
+  --color-done: #3f7a52; /* checkbox fill + check icon on chips (meets 3:1 for non-text) */
+  --color-celebrate-bg: #fff6d6;
 
-  /* Space */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
+  /* Wreath (consumed by Wreath.svelte) */
+  --wreath-green-1: #8dbf9b;
+  --wreath-green-2: #a7d1b1;
+  --wreath-berry: #e98a8a;
+  --wreath-candle-purple: #a98bd6;
+  --wreath-candle-purple-hi: #c7b2ea;
+  --wreath-candle-rose: #f2a7c3;
+  --wreath-candle-rose-hi: #f8cadb;
+  --wreath-candle-christ: #ffffff;
+  --wreath-flame: #f6b24a;
+  --wreath-flame-core: #fff6cf;
+  --wreath-glow: #fff1b8;
+  --wreath-star: #e7c96a;
+  --wreath-star-soft: #d9c2ee;
 
-  /* Shape & sizing */
-  --radius: 0.75rem;
-  --radius-sm: 0.5rem;
-  --tap-min: 2.75rem; /* 44px at default size */
+  /* Shape and spacing */
+  --radius-card: 1.5rem; /* 24px */
+  --radius-chip: 1.375rem; /* 22px */
+  --radius-sheet: 2rem; /* 32px */
+  --radius-pill: 999px;
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-5: 1.25rem; /* 20px */
+  --space-6: 1.5rem; /* 24px */
+  --tap-min: 2.75rem; /* 44px: minimum for anything tappable */
+  --tap-kid: 3.5rem; /* 56px: primary buttons, check boxes, week chips */
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms; /* candle lighting */
+
+  /* ---- App additions (not in the design file; built from the values above) ---- */
+  --space-7: 2rem; /* 32px: page bottom padding */
   --content-max: 42rem;
-  --focus-ring: 3px solid var(--color-focus);
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 2px 8px rgb(0 0 0 / 0.06);
-
-  /* Motion (zeroed under reduced motion in base.css) */
-  --duration: 160ms;
+  --focus-ring: 3px solid var(--color-accent);
+  --shadow: 0 2px 8px color-mix(in srgb, var(--color-text) 8%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-reduced-motion: reduce) {
   :root {
-    --color-bg: #16141b;
-    --color-surface: #211e28;
-    --color-surface-alt: #2a2633;
-    --color-text: #f2eff6;
-    --color-text-muted: #c3bccd;
-    --color-border: #3d3747;
-    --color-border-strong: #9a91a6;
-    --color-accent: #c9b4f0;
-    --color-accent-hover: #ddd0f7;
-    --color-on-accent: #1a1424;
-    --color-accent-soft: #332a45;
-    --color-done: #8fd6a5;
-    --color-done-soft: #1d3326;
-    --color-notice-bg: #3a2f10;
-    --color-notice-text: #f7e2a8;
-    --color-focus: #8ab4ff;
-    --color-backdrop: rgb(0 0 0 / 0.7);
-    --shadow: none;
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
   }
 }
