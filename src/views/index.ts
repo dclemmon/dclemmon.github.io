@@ -1,5 +1,6 @@
 import type { Component } from 'svelte';
 import GuideView from './GuideView.svelte';
+import WreathView from './WreathView.svelte';
 import type { ViewProps } from './types.ts';
 
 interface ViewEntry {
@@ -14,6 +15,7 @@ interface ViewEntry {
  * Core and content don't change.
  */
 export const views = {
+  wreath: { component: WreathView, label: 'Wreath' },
   list: { component: GuideView, label: 'Week list' },
 } satisfies Record<string, ViewEntry>;
 
