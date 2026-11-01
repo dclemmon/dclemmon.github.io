@@ -4,9 +4,9 @@
   import EventList from '../components/EventList.svelte';
   import InstallTip from '../components/InstallTip.svelte';
   import Modal from '../components/Modal.svelte';
+  import Progress from '../components/Progress.svelte';
   import WeekSheet from '../components/WeekSheet.svelte';
   import WeekChips from '../components/WeekChips.svelte';
-  import WeekGlance from '../components/WeekGlance.svelte';
   import Wreath from '../components/Wreath.svelte';
   import { formatRangeCompact, formatShortDate, formatTime } from '../core/dates.ts';
   import { eventsInWeek, nextEvent, upcomingEvents } from '../core/events.ts';
@@ -20,6 +20,7 @@
   const week = $derived(getWeekById(season, seasonState.currentWeekId) ?? season.weeks[0]);
   const lit = $derived(litCandles(season, seasonState.today));
   const statuses = $derived(weekStatuses(season, seasonState, (id) => progress.isDone(id)));
+  const status = $derived(statuses.find((s) => s.weekId === week.id));
 
   const buttonLabel = $derived(
     seasonState.phase === 'before'
@@ -35,39 +36,45 @@
 
   /*
     Android Back: opening a sheet (a week, the events list, the calendar or Home Screen
-    help) adds one history entry, so Back closes it instead of leaving the app. "Next"
-    replaces that entry, so one Back always closes the week sheet.
+    help) adds one history entry, so Back closes it instead of leaving the app. Opening an
+    activity inside the week sheet adds a second, so Back first returns to the week.
+    "Next" replaces the week's entry. `depth` counts the entries we've added.
   */
   const SHEET_STATE = 'advent-sheet';
-  let pushedHistory = false;
+  let depth = 0;
 
   let infoDialog: 'calendar' | 'install' | 'events' | null = $state(null);
+  let activityId: string | null = $state(null);
+
+  function push(state: string) {
+    history.pushState({ [SHEET_STATE]: state }, '');
+    depth += 1;
+  }
 
   function openInfo(kind: 'calendar' | 'install' | 'events') {
     infoDialog = kind;
-    history.pushState({ [SHEET_STATE]: kind }, '');
-    pushedHistory = true;
+    push(kind);
   }
 
-  /** Closed with the button, Escape or the backdrop: remove the entry we added. */
-  function popOurEntry() {
-    if (pushedHistory) {
-      pushedHistory = false;
-      history.back();
+  /** Closed with the button, Escape or the backdrop: remove the entries we added. */
+  function popOurEntries() {
+    if (depth > 0) {
+      const n = depth;
+      depth = 0; // so the popstate this causes isn't taken for the user's Back
+      history.go(-n);
     }
   }
 
   function onInfoClosed() {
     infoDialog = null;
-    popOurEntry();
+    popOurEntries();
   }
 
   function openWeek(id: string, from: HTMLElement | null = null) {
     opener = from;
     onSelectWeek(id); // may tidy the URL (drops a #week hash) before we add our entry
     if (sheetWeekId === null) {
-      history.pushState({ [SHEET_STATE]: id }, '');
-      pushedHistory = true;
+      push(id);
     } else {
       history.replaceState({ [SHEET_STATE]: id }, '');
     }
@@ -80,16 +87,31 @@
     history.replaceState({ [SHEET_STATE]: id }, '');
   }
 
+  function openActivity(id: string) {
+    activityId = id;
+    push(`${sheetWeekId}/${id}`);
+  }
+
+  /** The sheet's "back to the week" link does what Android Back does. */
+  function backToWeek() {
+    if (depth > 1) history.back();
+    else activityId = null;
+  }
+
   function onSheetClosed() {
     sheetWeekId = null;
-    popOurEntry();
+    activityId = null;
+    popOurEntries();
   }
 
   $effect(() => {
     const onPop = () => {
-      // Back (or a swipe) while a sheet is open: just close it.
-      if (pushedHistory && (sheetWeekId !== null || infoDialog !== null)) {
-        pushedHistory = false;
+      if (depth === 0) return;
+      depth -= 1;
+      // Back (or a swipe): leave the activity first, then close the sheet.
+      if (activityId !== null && sheetWeekId !== null) {
+        activityId = null;
+      } else {
         sheetWeekId = null;
         infoDialog = null;
       }
@@ -129,21 +151,20 @@
 
   <Wreath {lit} />
 
+  {#if status}
+    <Progress
+      variant="dots"
+      done={status.done}
+      total={status.total}
+      suffix={seasonState.phase === 'during' ? 'done this week' : `done in ${week.label}`}
+    />
+  {/if}
+
   <WeekChips weeks={season.weeks} {statuses} onOpen={openWeek} />
 
-  <WeekGlance
-    {week}
-    isDone={(id) => progress.isDone(id)}
-    suffix={seasonState.phase === 'during' ? 'done this week' : `done in ${week.label}`}
-  >
-    <button
-      class="btn btn-primary"
-      type="button"
-      onclick={(e) => openWeek(week.id, e.currentTarget)}
-    >
-      {buttonLabel}
-    </button>
-  </WeekGlance>
+  <button class="btn btn-primary" type="button" onclick={(e) => openWeek(week.id, e.currentTarget)}>
+    {buttonLabel}
+  </button>
 
   {#if upcoming.length > 0}
     <section class="church" aria-labelledby="next-at-church">
@@ -189,6 +210,9 @@
   onNext={showNextWeek}
   eventsFor={(w) => eventsInWeek(season, w)}
   feeds={season.feeds}
+  {activityId}
+  onOpenActivity={openActivity}
+  onBack={backToWeek}
 />
 
 <Modal

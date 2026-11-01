@@ -195,7 +195,7 @@
     Safari shrinks 0%-basis items to almost nothing, leaving a tiny sheet.
   */
   .sheet .inner {
-    flex: 0 1 auto;
+    flex: 1 1 auto; /* fills a sheet held taller than its content (see WeekSheet) */
     min-height: 0;
     padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
   }
@@ -248,7 +248,7 @@
   }
 
   .sheet .body {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;

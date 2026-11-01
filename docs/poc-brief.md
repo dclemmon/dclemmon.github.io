@@ -52,7 +52,7 @@ The audience is now the Children & Family ministries: parents and kids (preschoo
 2. **Content:** optional week fields `shortTitle` (chip label), `candle` (`"1"`–`"4"`, `"christ"`) and `doneMessage` (celebration text). All existing IDs stay the same, so saved check-offs survive.
 3. **Core (unit tested):** which candles are lit for a date, each week's timing (past / current / future) and completion counts, and the saved view choice.
 4. **WreathView (new default):** date and week title, the wreath (candles lit by date), a progress row, five week chips, "See this week's activities", and a footer with the device-only note, "Add reminders" and "Add to Home Screen".
-5. **Week sheet:** a bottom sheet on native `<dialog>` with round check buttons, a celebration when the week is done, and a "Next" button. Android Back closes it.
+5. **Week sheet:** a bottom sheet on native `<dialog>` with round check buttons, a celebration when the week is done, and a "Next" button. Android Back closes it. Since the devotion-first pass, the sheet opens with the week's introduction, shows one compact row per activity (round check button plus title), and tapping a title shows that activity on its own inside the same sheet, with a "Mark done" control and a link back to the week. Church events follow the activities.
 6. **View switcher:** "Wreath" / "Week list" on both views, saved on the device, with `?view=wreath|list` for links and QA.
 7. **Week list:** the iteration 1 layout, restyled only.
 8. **Motion:** flame flicker, candle light-up, sheet slide-up and celebration, all off under reduced motion.
@@ -90,7 +90,7 @@ Status after the step 13 pass (Oct 31). _Checked in headless Chrome_ means autom
 3. **Reduced motion:** turn on Reduce Motion on an iPhone or Mac and confirm the candles, sheet and celebration don't move.
 4. **Lighthouse:** accessibility on both views (`?view=wreath` and `?view=list`) in an incognito window.
 5. **iPhone and Android:** Add to Home Screen; check the icon, the lilac theme colour, that it opens to the wreath, that check-offs persist, and that the sheet clears the iPhone home bar.
-6. **Android Back:** with a week open, Back closes the sheet; a second Back leaves as normal. Try in Chrome and in the installed app.
+6. **Android Back:** with an activity open, Back returns to its week; with a week open, Back closes the sheet; one more Back leaves as normal. Try in Chrome and in the installed app.
 7. **Private browsing and Gmail's in-app browser:** no errors, check-offs work for the visit, and the view falls back to the Wreath after a reload.
 8. **Candle light-up:** watch the candles fade in on a real phone (about 1.2 seconds in all).
 

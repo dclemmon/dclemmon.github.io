@@ -4,11 +4,13 @@
     /** What is being checked off, for screen readers (e.g. the activity title). */
     describes: string;
     onchange: (checked: boolean) => void;
+    /** Full width with larger text, as the main action of a sheet. */
+    block?: boolean;
   }
-  let { checked, describes, onchange }: Props = $props();
+  let { checked, describes, onchange, block = false }: Props = $props();
 </script>
 
-<label class="check" class:checked>
+<label class="check" class:checked class:block>
   <input type="checkbox" {checked} onchange={(e) => onchange(e.currentTarget.checked)} />
   <span aria-hidden="true">{checked ? 'Done' : 'Mark done'}</span>
   <span class="visually-hidden">Done: {describes}</span>
@@ -28,6 +30,13 @@
     font-weight: var(--font-weight-bold);
     cursor: pointer;
     user-select: none;
+  }
+
+  .check.block {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: var(--text-lg);
   }
 
   .check.checked {
