@@ -4,7 +4,7 @@ Oct 31, 2026 · Cameron
 
 ## Overview
 
-A static, backend-free web app (PWA) lets church families follow the 2026 Advent at-home activities from any phone, tablet or computer. Families reach it by scanning a QR code on a laser-cut ornament, or from a link in email or the bulletin. Advent 2026 runs Sunday, November 29 through Friday, December 25.
+A static, backend-free web app (PWA), "Advent Devotional", lets families in the church's Children & Family ministries follow the 2026 Advent at-home activities. Parents and their kids (roughly preschool through elementary) use it together, mostly on a phone; tablets and computers work too. Families reach it by scanning a QR code on a laser-cut ornament, or from a link in email or the bulletin. Advent 2026 runs Sunday, November 29 through Friday, December 25.
 
 ### Goals
 
@@ -24,13 +24,15 @@ A static, backend-free web app (PWA) lets church families follow the 2026 Advent
 
 ## Users and access paths
 
-The audience spans young children (with a parent) to elderly members, on everything from new phones to older desktops.
+The audience is the Children & Family ministries: parents and their kids, roughly preschool through elementary, using the app together. Phones come first; desktop stays usable but is secondary.
 
 | User | Typical device | How they arrive |
 | --- | --- | --- |
-| Families with kids | Phone or tablet | Scanning the ornament QR code; may add to Home Screen |
-| Adults without kids | Phone | QR code, email link or bulletin |
-| Elderly members | Desktop or laptop, sometimes tablet | Link in email or on the church website |
+| Parent and kids together (primary) | Phone, sometimes tablet | Scanning the ornament QR code; often add to Home Screen |
+| Parent alone (planning the week) | Phone | Ministry email, bulletin link or QR code |
+| Grandparent or other caregiver | Tablet or desktop | Link forwarded by the family or on the church website |
+
+- Kids may hold the phone, but a parent is assumed to be nearby; young children may not read yet, so short words, pictures and clear states matter more than long text.
 
 - Every path lands on the same URL; no path may require installing anything.
 - Links opened inside email apps (Gmail, Outlook) or social apps may use an in-app browser; the app must work there, accepting that check-offs won't carry over to the regular browser.
@@ -62,11 +64,11 @@ Must-haves are marked **M**; nice-to-haves **N**.
 5. **M** The app works fully if storage is unavailable or cleared (private browsing, iOS purges); check-offs just don't persist.
 6. **M** State is keyed by a content ID per activity, so fixing a typo doesn't wipe anyone's check-offs.
 
-### Gamification (possibility, not required)
+### Gamification
 
 1. **N** Streaks: count consecutive weeks (or days, if daily items exist) with at least one activity completed.
-2. **N** A visual progress element, such as an Advent wreath whose candles light as weeks are completed, or an Advent-calendar door that opens.
-3. **N** A small celebration when a week is fully completed.
+2. **M** An animated Advent wreath (the default view). Candles light by calendar date (current and past weeks; the Christ candle from Dec 24). Per-week progress shows on week chips and a progress row, not on the wreath.
+3. **M** A gentle celebration when every activity in a week is checked.
 4. **N** Any gamification is computed purely from local state, never compares users, and never shames missed weeks.
 
 ## Content and editing
@@ -192,7 +194,7 @@ advent/
 4. **M** Static images may be raster (compressed WebP); all SVGs are optimized (SVGO); every meaningful image has alt text.
 5. **M** Any purchased, AI-generated or donated art has terms that permit use by the church on the web.
 6. **N** Sources in preference order: hand-built or code-drawn SVG, licensed stock vectors, congregation art, AI-generated backgrounds with vector overlays.
-7. Wreath details (candle colors, Christ candle) and what lights a candle (calendar date vs. family check-offs) are open items.
+7. Wreath details are decided: three purple candles, one rose (Week 3) and a white Christ candle in the center; candles light by calendar date. Visual source of truth: `docs/design/` (direction C, "Soft storybook").
 
 ### Browser and device support
 
@@ -206,7 +208,10 @@ advent/
 2. **M** Readable default text (about 18 px body) that scales with browser and OS text-size settings.
 3. **M** Large tap targets (at least 44 × 44 px) for check boxes and navigation.
 4. **M** Plain language; no reliance on icons or color alone.
-5. **M** Respects reduced-motion settings for any celebration animation.
+5. **M** Respects reduced-motion settings: under `prefers-reduced-motion: reduce`, no animation plays at all.
+6. **M** Kid-friendly targets: 56 px for primary buttons, check boxes and week chips; 44 px minimum everywhere else.
+7. **M** Short, plain words a young child can follow with a parent, and a visible text label next to every icon.
+8. **M** Nothing shames missed weeks or unchecked items.
 
 ### Privacy
 
@@ -251,7 +256,7 @@ The first milestone is a simple placeholder demo in the next few days; everythin
 - [ ] Final content delivered by the content team
 - [ ] QR sticker scan tests passed; stickers ordered (allow print lead time)
 - [ ] Production deploy on the church subdomain, with `.ics` feed
-- [ ] Dry run with a few non-technical members, including at least one elderly member on a desktop
+- [ ] Dry run with a few families, including at least one parent with young kids on a phone (and one check on a desktop)
 - [ ] Opening event: ornaments with QR stickers
 - [ ] Season runs Nov 29 – Dec 25; post-season archive page goes up
 
@@ -262,10 +267,9 @@ The first milestone is a simple placeholder demo in the next few days; everythin
 - [ ] Who owns the content, and when is it final?
 - [ ] Weekly items only, or daily prompts too?
 - [ ] Does the content include song lyrics, hymn texts or scripture that need licensing or permission?
-- [ ] Which gamification ideas (streak, wreath, calendar door), if any, are in for this year?
 - [ ] What happens at the URL after Dec 25, and in future years?
 - [ ] Does the church's existing website platform support this, or is a separate static host needed?
-- [ ] Branding: colors, logo, and an app name for the Home Screen icon.
+- [ ] Branding: logo, if any. (Colors and the app name "Advent Devotional" are decided.)
 
 ### Decisions made
 
@@ -277,3 +281,7 @@ The first milestone is a simple placeholder demo in the next few days; everythin
 - Church-owned subdomain in the QR code; personal accounts only for the demo and as a fallback.
 - Printed versions are produced separately and are out of scope.
 - Detailed design and build begin once this document is final.
+- Audience is the Children & Family ministries (parents and kids together, phone first).
+- Visual direction C, "Soft storybook" (`docs/design/`), with the Baloo 2 font self-hosted.
+- Default view is the Advent wreath; the weekly list stays available as the "Week list" view.
+- App name: "Advent Devotional".

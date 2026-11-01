@@ -1,5 +1,7 @@
 # PoC brief: placeholder demo
 
+_Iteration 1 (below, through "Out of scope") is done; iteration 2 follows its acceptance checks._
+
 Goal: a simple, working demo with placeholder content, deployable to a personal static host within a few days, so church stakeholders can react to something real. It should also prove out the architecture so later work (calendar view, wreath, final content) slots in without rework.
 
 ## In scope
@@ -39,6 +41,45 @@ Goal: a simple, working demo with placeholder content, deployable to a personal 
 - [x] No network requests to any origin other than the app's own (verify in devtools).
 - [ ] `advent.ics` imports cleanly into Apple Calendar and Google Calendar.
 - [ ] "Add to Home Screen" works on an iPhone and an Android phone.
+
+## Iteration 2: "Soft storybook" and the Advent wreath
+
+The audience is now the Children & Family ministries: parents and kids (preschool through elementary) using the app together, mostly on phones. The visual direction is chosen (direction C, `docs/design/`), and the app is named "Advent Devotional".
+
+### In scope
+
+1. **Theme:** `docs/design/tokens.css` becomes `src/theme/tokens.css`; components use tokens only. Baloo 2 is self-hosted (no third-party requests). Light theme only for now.
+2. **Content:** optional week fields `shortTitle` (chip label), `candle` (`"1"`–`"4"`, `"christ"`) and `doneMessage` (celebration text). All existing IDs stay the same, so saved check-offs survive.
+3. **Core (unit tested):** which candles are lit for a date, each week's timing (past / current / future) and completion counts, and the saved view choice.
+4. **WreathView (new default):** date and week title, the wreath (candles lit by date), a progress row, five week chips, "See this week's activities", and a footer with the device-only note, "Add reminders" and "Add to Home Screen".
+5. **Week sheet:** a bottom sheet on native `<dialog>` with round check buttons, a celebration when the week is done, and a "Next" button. Android Back closes it.
+6. **View switcher:** "Wreath" / "Week list" on both views, saved on the device, with `?view=wreath|list` for links and QA.
+7. **Week list:** the iteration 1 layout, restyled only.
+8. **Motion:** flame flicker, candle light-up, sheet slide-up and celebration, all off under reduced motion.
+9. **Icons:** redrawn in the new palette.
+
+### Acceptance checks
+
+- [ ] `npm test` passes, including new tests for lit candles, week timing and status, the view preference, compact date formats, the new schema fields and the stable-ID guard.
+- [ ] `npm run build` passes, and fails on an invalid or duplicate `candle`.
+- [ ] With nothing saved, the app opens to the Wreath view. `?view=list` shows the Week list without changing the saved choice. The switcher's choice survives a reload.
+- [ ] `?date=2026-12-08` shows "Dec 6 – 12", "Week 2 · Peace", 2 candles lit, Hope done (if checked), Peace "Now", and Joy, Love and Jesus with their dates.
+- [ ] Dec 24 lights the Christ candle. Nov 28 lights nothing. Dec 26 lights all five.
+- [ ] Chips and "See this week's activities" open the week sheet. Escape and the close button close it, and focus returns to the opener.
+- [ ] Checking every activity shows "You did it!" and a screen reader announces it. "Next" moves to the following week.
+- [ ] Check-offs made in iteration 1 still show as done.
+- [ ] The wreath home and week sheet match `docs/design/reference/*.html`, apart from the corrections in the design notes.
+- [ ] The Week list behaves exactly as in iteration 1, restyled.
+- [ ] No hex colors outside `tokens.css`, apart from the commented manifest values.
+- [ ] Baloo 2 is served from the app's own origin; no third-party requests.
+- [ ] With reduced motion on, nothing animates.
+- [ ] Primary buttons, check buttons and week chips are at least 56px; everything else tappable is at least 44px. Every icon has visible text.
+- [ ] Usable at 360px and on desktop, with no horizontal scroll at 200% text.
+- [ ] Lighthouse accessibility ≥ 95 on both views; no console errors; first load < 500 KB.
+- [ ] The app shows as "Advent Devotional" (header, tab title, install name). Calendar subscribers see renamed events, not duplicates.
+- [ ] Android Back closes an open week sheet without leaving the app.
+- [ ] New icons look right on iPhone and Android Home Screens, including the maskable crop.
+- [ ] Add to Home Screen works on an iPhone and an Android phone. Private browsing works without errors.
 
 ## Suggested order
 

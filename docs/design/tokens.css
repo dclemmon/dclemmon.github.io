@@ -1,0 +1,85 @@
+/*
+  Theme tokens: direction C "Soft storybook".
+  Drop-in starting point for src/theme/tokens.css. Components use these, never raw hex.
+  Font: Baloo 2 (SIL Open Font License), self-hosted (no Google Fonts requests at runtime).
+*/
+:root {
+  /* Type */
+  --font-body: 'Baloo 2', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-weight-regular: 500;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;
+  --text-sm: 0.9375rem;   /* 15px: secondary labels */
+  --text-base: 1.0625rem; /* 17px: body */
+  --text-lg: 1.1875rem;   /* 19px: card titles, buttons */
+  --text-xl: 1.375rem;    /* 22px: celebration headline */
+  --text-2xl: 2.125rem;   /* 34px: week title */
+  --line-tight: 1.1;
+  --line-body: 1.4;
+
+  /* Surfaces */
+  --color-bg: #F4EEF8;          /* lilac paper */
+  --color-surface: #FFFFFF;     /* cards, switcher */
+  --color-surface-muted: #EDE5F4; /* future-week chips */
+  --color-border: #E4D8EF;
+  --color-scrim: rgba(58, 46, 82, 0.55); /* behind the week sheet */
+
+  /* Text */
+  --color-text: #3A2E52;
+  --color-text-muted: #5F5378;
+
+  /* Actions */
+  --color-accent: #6A4AA8;        /* primary button, links, scripture refs */
+  --color-accent-hover: #4F3485;
+  --color-on-accent: #FFFFFF;
+  --color-accent-soft: #E9DFF7;   /* selected segment in the view switcher */
+  --color-current: #A98BD6;       /* current-week chip border */
+
+  /* Status */
+  --color-done-bg: #DDEFE2;       /* completed-week chip */
+  --color-done: #3F7A52;          /* checkbox fill + check icon on chips (meets 3:1 for non-text) */
+  --color-celebrate-bg: #FFF6D6;
+
+  /* Wreath (consumed by wreath.svg) */
+  --wreath-green-1: #8DBF9B;
+  --wreath-green-2: #A7D1B1;
+  --wreath-berry: #E98A8A;
+  --wreath-candle-purple: #A98BD6;
+  --wreath-candle-purple-hi: #C7B2EA;
+  --wreath-candle-rose: #F2A7C3;
+  --wreath-candle-rose-hi: #F8CADB;
+  --wreath-candle-christ: #FFFFFF;
+  --wreath-flame: #F6B24A;
+  --wreath-flame-core: #FFF6CF;
+  --wreath-glow: #FFF1B8;
+  --wreath-star: #E7C96A;
+  --wreath-star-soft: #D9C2EE;
+
+  /* Shape and spacing */
+  --radius-card: 24px;
+  --radius-chip: 22px;
+  --radius-sheet: 32px;
+  --radius-pill: 999px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --tap-min: 44px;      /* minimum for anything tappable */
+  --tap-kid: 56px;      /* primary buttons, check boxes, week chips */
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 300ms;
+  --motion-slow: 600ms; /* candle lighting */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+}
