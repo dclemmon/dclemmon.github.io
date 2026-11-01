@@ -108,15 +108,24 @@ Families can see and subscribe to services, special events and rehearsals alongs
 
 ### Acceptance checks
 
-- [ ] `npm test` passes, including tests for event validation, repeat expansion, upcoming events, events per week, time formatting and every feed.
-- [ ] `npm run build` fails on a duplicate event ID, an unknown feed, a bad date or time, or an end before the start.
-- [ ] `advent.ics` still has the same event IDs; existing subscribers see no duplicates.
-- [ ] Each of `events.ics`, `rehearsals.ics` and `all.ics` imports cleanly into Apple Calendar and Google Calendar, with times correct in Denver time and in another time zone.
-- [ ] A weekly rehearsal shows on every week except its skipped dates; a cancelled event shows as cancelled.
-- [ ] Renaming a feed in the content file changes its name in the app and in the calendar.
-- [ ] Each feed card's Subscribe, Add to Google Calendar and Download work on an iPhone and an Android phone.
-- [ ] "Coming up" shows the next events for the current date (try several `?date=` values); "See all events" lists them all; the week sheet and List view show each week's events.
-- [ ] Targets, contrast, keyboard, screen reader, reduced motion and 360px checks still pass.
+Status after the step 7 pass (Oct 31). **Device** items need the feeds on the live site and a real phone.
+
+- [x] `npm test` passes, including tests for event validation, repeat expansion, upcoming events, events per week, time formatting and every feed. _(151 tests)_
+- [x] `npm run build` fails on a duplicate event ID, an unknown feed, a bad date or time, or an end before the start.
+- [x] `advent.ics` still has the same event IDs; existing subscribers see no duplicates. _(compared with the live file; only the calendar name changes, to "Advent Devotional: Weekly reminders")_
+- [ ] Each of `events.ics`, `rehearsals.ics` and `all.ics` imports cleanly into Apple Calendar and Google Calendar, with times correct in Denver time and in another time zone. _(**device**; format, time zone block and UTC repeat end are unit tested)_
+- [x] A weekly rehearsal shows on every week except its skipped dates; a cancelled event shows as cancelled. _(in the app and in the feed; **device:** confirm in a calendar app)_
+- [x] Renaming a feed in the content file changes its name in the app and in the calendar. _(unit tested for the feed; the cards read names from content)_
+- [ ] Each feed card's Subscribe, Add to Google Calendar and Download work on an iPhone and an Android phone. _(**device**; Google can only fetch the feed from the live site)_
+- [x] "Coming up" shows the next events for the current date (try several `?date=` values); "See all events" lists them all; the week sheet and List view show each week's events. _(checked Nov 20, Dec 8, Dec 21 and Dec 26)_
+- [x] Targets, contrast, keyboard, screen reader, reduced motion and 360px checks still pass. _(sizes, overflow at 200% text and reduced motion re-measured; keyboard and screen reader by hand as before)_
+
+### Try on a phone
+
+1. On https://dclemmon.github.io/, open **Add to calendar** and tap **Subscribe** on "Rehearsals" (iPhone) or **Add to Google Calendar** (Android, or any phone using Google Calendar).
+2. Check the pageant rehearsal shows Wednesdays 6–7 pm from Nov 18 to Dec 16, with no rehearsal on Nov 25.
+3. Subscribe to "Services and special events": the Dec 12 cookie decorating should show as cancelled, the Dec 20 pageant at 10–11 am.
+4. Optional: change the phone's time zone and confirm the times shift (e.g. the pageant shows 12–1 pm in Eastern time).
 
 ### Open items
 
