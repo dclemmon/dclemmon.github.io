@@ -131,6 +131,7 @@
     width: 100%;
     max-width: 36rem;
     max-height: calc(100% - var(--space-7));
+    max-height: calc(100dvh - var(--space-7));
     margin: auto auto 0;
     border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
   }
@@ -178,8 +179,13 @@
     padding: var(--space-5);
   }
 
+  /*
+    Size the sheet to its content, up to the max-height, and let only the body scroll.
+    Use flex-basis auto, not flex: 1 (basis 0%): in a column flexbox with no fixed height,
+    Safari shrinks 0%-basis items to almost nothing, leaving a tiny sheet.
+  */
   .sheet .inner {
-    flex: 1;
+    flex: 0 1 auto;
     min-height: 0;
     padding-bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
   }
@@ -232,7 +238,7 @@
   }
 
   .sheet .body {
-    flex: 1;
+    flex: 0 1 auto;
     min-height: 0;
     overflow-y: auto;
   }
@@ -245,6 +251,7 @@
   }
 
   .sheet .actions {
+    flex: none;
     flex-direction: column;
     align-items: stretch;
   }

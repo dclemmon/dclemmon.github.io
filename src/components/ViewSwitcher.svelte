@@ -31,7 +31,7 @@
 
   button {
     min-height: var(--tap-min);
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-3);
     border: 0;
     border-radius: var(--radius-pill);
     background: transparent;

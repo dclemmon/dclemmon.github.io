@@ -16,7 +16,7 @@ interface ViewEntry {
  */
 export const views = {
   wreath: { component: WreathView, label: 'Wreath' },
-  list: { component: GuideView, label: 'Week list' },
+  list: { component: GuideView, label: 'List' },
 } satisfies Record<string, ViewEntry>;
 
 export type ViewName = keyof typeof views;
