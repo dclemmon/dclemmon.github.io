@@ -54,3 +54,22 @@ export function formatRange(startIso: string, endIso: string, locale = 'en-US'):
   const opts: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
   return `${s.toLocaleDateString(locale, opts)} – ${e.toLocaleDateString(locale, opts)}`;
 }
+
+/** e.g. "Dec 13". */
+export function formatMonthDay(iso: string, locale = 'en-US'): string {
+  const dt = parseIsoDate(iso);
+  if (!dt) return iso;
+  return dt.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
+}
+
+/** Like formatRange, but drops a repeated month: "Dec 6 – 12", "Nov 29 – Dec 5". */
+export function formatRangeCompact(startIso: string, endIso: string, locale = 'en-US'): string {
+  const s = parseIsoDate(startIso);
+  const e = parseIsoDate(endIso);
+  if (!s || !e) return `${startIso} – ${endIso}`;
+  const sameMonth = s.getFullYear() === e.getFullYear() && s.getMonth() === e.getMonth();
+  const end = sameMonth
+    ? e.toLocaleDateString(locale, { day: 'numeric' })
+    : formatMonthDay(endIso, locale);
+  return `${formatMonthDay(startIso, locale)} – ${end}`;
+}

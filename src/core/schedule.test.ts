@@ -5,10 +5,12 @@ import {
   getActivitiesForDate,
   getSeasonState,
   getToday,
+  litCandles,
   nextWeek,
   prevWeek,
   sortActivities,
   weekIdFromHash,
+  weekTiming,
 } from './schedule.ts';
 
 const season = parseSeason(seasonData);
@@ -86,5 +88,51 @@ describe('dated (daily) activities', () => {
       { id: 'd', title: 'd', description: 'd' },
     ];
     expect(sortActivities(acts).map((a) => a.id)).toEqual(['a', 'd', 'b', 'c']);
+  });
+});
+
+describe('litCandles', () => {
+  it.each([
+    ['2026-11-28', []],
+    ['2026-11-29', ['1']],
+    ['2026-12-05', ['1']],
+    ['2026-12-06', ['1', '2']],
+    ['2026-12-13', ['1', '2', '3']],
+    ['2026-12-20', ['1', '2', '3', '4']],
+    ['2026-12-23', ['1', '2', '3', '4']],
+    ['2026-12-24', ['1', '2', '3', '4', 'christ']],
+    ['2026-12-25', ['1', '2', '3', '4', 'christ']],
+    ['2026-12-26', ['1', '2', '3', '4', 'christ']],
+  ])('%s → %j', (date, slots) => {
+    expect([...litCandles(season, date)].sort()).toEqual([...slots].sort());
+  });
+
+  it('follows a ?date= override', () => {
+    const now = new Date(2026, 10, 1);
+    expect(litCandles(season, getToday('?date=2026-12-13', now)).has('3')).toBe(true);
+  });
+
+  it('ignores weeks without a candle', () => {
+    const s = structuredClone(season);
+    delete s.weeks[0].candle;
+    expect(litCandles(s, '2026-12-01').size).toBe(0);
+  });
+});
+
+describe('weekTiming', () => {
+  const timings = (date: string) =>
+    season.weeks.map((w) => weekTiming(w, getSeasonState(season, date)));
+
+  it('before the season everything is future', () => {
+    expect(timings('2026-11-28')).toEqual(Array(5).fill('future'));
+  });
+
+  it('during the season splits past / current / future', () => {
+    expect(timings('2026-12-14')).toEqual(['past', 'past', 'current', 'future', 'future']);
+    expect(timings('2026-12-24')).toEqual(['past', 'past', 'past', 'past', 'current']);
+  });
+
+  it('after the season everything is past', () => {
+    expect(timings('2026-12-26')).toEqual(Array(5).fill('past'));
   });
 });

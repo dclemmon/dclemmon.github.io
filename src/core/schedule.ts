@@ -2,7 +2,7 @@
  * Which part of the season is "now", based on the device's local date.
  * Framework-free; no Svelte imports.
  */
-import type { Activity, Season, Week } from '../../content/schema.ts';
+import type { Activity, CandleSlot, Season, Week } from '../../content/schema.ts';
 import { parseIsoDate, toIsoDate } from './dates.ts';
 
 export type Phase = 'before' | 'during' | 'after';
@@ -75,4 +75,29 @@ export function sortActivities(activities: Activity[]): Activity[] {
       return x.i - y.i;
     })
     .map(({ a }) => a);
+}
+
+export type WeekTiming = 'past' | 'current' | 'future';
+
+/**
+ * Where a week sits relative to today. Before the season every week is future;
+ * after it, every week is past.
+ */
+export function weekTiming(week: Week, state: SeasonState): WeekTiming {
+  if (state.phase === 'before') return 'future';
+  if (state.phase === 'after') return 'past';
+  if (week.id === state.currentWeekId) return 'current';
+  return week.startDate > state.today ? 'future' : 'past';
+}
+
+/**
+ * Wreath candles lit on `today`: every section that has started (current and past
+ * weeks), so the Christ candle lights on its start date (Dec 24).
+ */
+export function litCandles(season: Season, today: string): Set<CandleSlot> {
+  const lit = new Set<CandleSlot>();
+  for (const w of season.weeks) {
+    if (w.candle && w.startDate <= today) lit.add(w.candle);
+  }
+  return lit;
 }
