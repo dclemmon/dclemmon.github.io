@@ -17,8 +17,10 @@
   const viewName = resolveView(search, storage, viewNames, config.defaultView);
 
   // A #week-id in the URL (e.g. from a calendar reminder) picks the starting week.
-  let selectedWeekId = $state(
-    weekIdFromHash(season, window.location.hash) ?? seasonState.currentWeekId,
+  const initialHashWeek = weekIdFromHash(season, window.location.hash);
+  let selectedWeekId = $state(initialHashWeek ?? seasonState.currentWeekId);
+  let linkedWeek: { id: string } | undefined = $state(
+    initialHashWeek ? { id: initialHashWeek } : undefined,
   );
 
   function selectWeek(id: string) {
@@ -32,7 +34,10 @@
   onMount(() => {
     const onHash = () => {
       const id = weekIdFromHash(season, window.location.hash);
-      if (id) selectedWeekId = id;
+      if (id) {
+        selectedWeekId = id;
+        linkedWeek = { id };
+      }
     };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
@@ -43,4 +48,12 @@
 
 <SiteHeader title={season.title} notice={season.notice} {previewDate} />
 
-<View {season} {seasonState} {previewDate} {selectedWeekId} onSelectWeek={selectWeek} {progress} />
+<View
+  {season}
+  {seasonState}
+  {previewDate}
+  {selectedWeekId}
+  onSelectWeek={selectWeek}
+  {linkedWeek}
+  {progress}
+/>

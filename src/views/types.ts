@@ -10,5 +10,10 @@ export interface ViewProps {
   previewDate?: string;
   selectedWeekId: string;
   onSelectWeek: (id: string) => void;
+  /**
+   * A week asked for by a link (#week-id), e.g. from a calendar reminder. A new object
+   * each time a link is followed, so views can react even to the same week twice.
+   */
+  linkedWeek?: { id: string };
   progress: ReactiveProgress;
 }

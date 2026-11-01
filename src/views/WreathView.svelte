@@ -1,5 +1,6 @@
 <script lang="ts">
   import Progress from '../components/Progress.svelte';
+  import WeekSheet from '../components/WeekSheet.svelte';
   import WeekChips from '../components/WeekChips.svelte';
   import Wreath from '../components/Wreath.svelte';
   import { formatRangeCompact } from '../core/dates.ts';
@@ -7,7 +8,7 @@
   import { weekStatuses } from '../core/summary.ts';
   import type { ViewProps } from './types.ts';
 
-  let { season, seasonState, onSelectWeek, progress }: ViewProps = $props();
+  let { season, seasonState, onSelectWeek, progress, linkedWeek }: ViewProps = $props();
 
   // The hero always reflects today's date; chips open any week.
   const week = $derived(getWeekById(season, seasonState.currentWeekId) ?? season.weeks[0]);
@@ -23,10 +24,20 @@
         : "See this week's activities",
   );
 
-  function openWeek(id: string) {
-    // The week sheet arrives in the next step; for now this only selects the week.
+  let sheetWeekId: string | null = $state(null);
+  let opener: HTMLElement | null = $state(null);
+  const sheetWeek = $derived(sheetWeekId ? (getWeekById(season, sheetWeekId) ?? null) : null);
+
+  function openWeek(id: string, from: HTMLElement | null = null) {
+    opener = from;
+    sheetWeekId = id;
     onSelectWeek(id);
   }
+
+  // A #week-id link (e.g. from a calendar reminder) opens that week's sheet.
+  $effect(() => {
+    if (linkedWeek) openWeek(linkedWeek.id);
+  });
 </script>
 
 <main class="page">
@@ -54,9 +65,9 @@
     />
   {/if}
 
-  <WeekChips weeks={season.weeks} {statuses} onOpen={(id) => openWeek(id)} />
+  <WeekChips weeks={season.weeks} {statuses} onOpen={openWeek} />
 
-  <button class="btn btn-primary" type="button" onclick={() => openWeek(week.id)}>
+  <button class="btn btn-primary" type="button" onclick={(e) => openWeek(week.id, e.currentTarget)}>
     {buttonLabel}
   </button>
 
@@ -67,6 +78,14 @@
     {/if}
   </footer>
 </main>
+
+<WeekSheet
+  week={sheetWeek}
+  isDone={(id) => progress.isDone(id)}
+  onToggle={(id, d) => progress.setDone(id, d)}
+  onclose={() => (sheetWeekId = null)}
+  {opener}
+/>
 
 <style>
   .page {

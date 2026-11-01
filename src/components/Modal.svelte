@@ -18,6 +18,11 @@
     heading?: HTMLHeadingElement;
     /** The scrolling body, so callers can scroll it back to the top. */
     body?: HTMLDivElement;
+    /**
+     * Where focus goes when the dialog closes. Defaults to whatever had focus when it
+     * opened (Safari doesn't focus buttons on click, so callers can pass the opener).
+     */
+    returnTo?: HTMLElement | null;
   }
   let {
     open,
@@ -29,6 +34,7 @@
     variant = 'dialog',
     heading = $bindable(),
     body = $bindable(),
+    returnTo,
   }: Props = $props();
 
   let dialog: HTMLDialogElement | undefined = $state();
@@ -38,7 +44,7 @@
   $effect(() => {
     if (!dialog) return;
     if (open && !dialog.open) {
-      returnFocus = document.activeElement as HTMLElement | null;
+      returnFocus = returnTo ?? (document.activeElement as HTMLElement | null);
       dialog.showModal();
     } else if (!open && dialog.open) {
       dialog.close();
