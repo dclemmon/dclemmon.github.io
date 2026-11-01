@@ -62,12 +62,14 @@ a:hover {
   outline-offset: 2px;
 }
 
-/* Headings focused programmatically after week changes */
-[tabindex='-1']:focus {
-  outline: none;
-}
+/*
+  Headings and titles focused by the app (after a week change, or when a dialog opens)
+  so screen readers announce them. They aren't controls, so no focus ring: Safari can
+  treat this kind of focus as "visible" and draw a square box around the title.
+*/
+[tabindex='-1']:focus,
 [tabindex='-1']:focus-visible {
-  outline: var(--focus-ring);
+  outline: none;
 }
 
 button {
