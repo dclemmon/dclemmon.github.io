@@ -94,6 +94,35 @@ Status after the step 13 pass (Oct 31). _Checked in headless Chrome_ means autom
 7. **Private browsing and Gmail's in-app browser:** no errors, check-offs work for the visit, and the view falls back to the Wreath after a reload.
 8. **Candle light-up:** watch the candles fade in on a real phone (about 1.2 seconds in all).
 
+## Iteration 3: church events and calendar feeds
+
+Families can see and subscribe to services, special events and rehearsals alongside the weekly reminders. Real events aren't known yet, so the content file starts with placeholder events marked as samples.
+
+### In scope
+
+1. **Content:** a season `timeZone` (`America/Denver`); a `feeds` list with each feed's name and description (editable text); an `events` list with stable IDs, feed, title, date, optional start/end time, place, description, weekly repeat with skipped dates, and a cancelled flag. Validation for all of it. Existing IDs unchanged.
+2. **Core (unit tested):** expanding repeating events, upcoming events, events in a week, and time formatting.
+3. **Feeds:** `advent.ics` (weekly reminders, same file name), `events.ics`, `rehearsals.ics`, `all.ics`. Timed events use the Denver time zone; repeats and skips become one repeating event; IDs never change.
+4. **Calendar dialog:** "Add to my calendar" with a card per feed: Subscribe, Add to Google Calendar (every device) and Download, plus the per-phone steps. The List view's calendar panel shows the same cards.
+5. **Events in the app:** "Coming up" on the Wreath view with "See all events"; "This week at church" in the week sheet; each week's events in the List view. Every event is shown to everyone, labeled by type.
+
+### Acceptance checks
+
+- [ ] `npm test` passes, including tests for event validation, repeat expansion, upcoming events, events per week, time formatting and every feed.
+- [ ] `npm run build` fails on a duplicate event ID, an unknown feed, a bad date or time, or an end before the start.
+- [ ] `advent.ics` still has the same event IDs; existing subscribers see no duplicates.
+- [ ] Each of `events.ics`, `rehearsals.ics` and `all.ics` imports cleanly into Apple Calendar and Google Calendar, with times correct in Denver time and in another time zone.
+- [ ] A weekly rehearsal shows on every week except its skipped dates; a cancelled event shows as cancelled.
+- [ ] Renaming a feed in the content file changes its name in the app and in the calendar.
+- [ ] Each feed card's Subscribe, Add to Google Calendar and Download work on an iPhone and an Android phone.
+- [ ] "Coming up" shows the next events for the current date (try several `?date=` values); "See all events" lists them all; the week sheet and List view show each week's events.
+- [ ] Targets, contrast, keyboard, screen reader, reduced motion and 360px checks still pass.
+
+### Open items
+
+- "Bring something" or "wear something" notes on events (revisit later).
+- Real event dates, times and places from the ministry.
+
 ## Suggested order
 
 Scaffold → content + schema → core + tests → GuideView → theme → PWA → ics → CI deploy. Open questions for Cameron go at the bottom of this file rather than being guessed.

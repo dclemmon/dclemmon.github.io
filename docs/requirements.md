@@ -82,9 +82,9 @@ Content lives in a data file separate from the code, so typo and bug fixes never
 5. **M** All content (activity text, scripture, images) must be cleared for use. Song lyrics and hymn text need appropriate licensing (for example the church's CCLI coverage); Bible quotations should follow the translation's permissions.
 6. **N** A content validation check (missing fields, duplicate IDs, dates outside Advent) that runs before deploy.
 
-## Reminders: calendar feed
+## Reminders and events: calendar feeds
 
-Reminders come from a static `.ics` calendar feed that users subscribe to, letting their own calendar app notify them with no server involved.
+Reminders and church events come from static `.ics` calendar feeds that users subscribe to, letting their own calendar app notify them with no server involved.
 
 1. **M** Publish a static `advent.ics` alongside the app, generated from the content file.
 2. **M** One event per week (all-day on each Advent Sunday), plus Christmas Eve/Day. Each event has a short summary and a link back to that week in the app.
@@ -94,7 +94,17 @@ Reminders come from a static `.ics` calendar feed that users subscribe to, letti
 6. **N** Optional mid-week nudge events if the content team wants more than one reminder per week.
 7. Email or text reminders through the church's existing communication channels remain the primary reminder path for members who won't subscribe.
 
-Note: Google Calendar refreshes subscribed feeds slowly (often many hours), so content should be final before families subscribe.
+### Services, special events and rehearsals
+
+8. **M** Church events (services, special events, rehearsals) live in the same content file as the activities, each with a stable ID, title, date, optional start and end time, place and short description. Weekly rehearsals can repeat, with skipped dates. An event can be marked cancelled instead of deleted, so subscribed calendars show the change.
+9. **M** Times are in the church's time zone (`America/Denver`), stored once in the content file.
+10. **M** Separate feeds, each generated from the content file: weekly reminders (`advent.ics`, unchanged so existing subscribers keep it), services and special events (`events.ics`), rehearsals (`rehearsals.ics`), and everything combined (`all.ics`).
+11. **M** Feed names and descriptions live in the content file, so they can be renamed without touching code. Starting names: "Weekly reminders", "Services and special events", "Rehearsals", "Everything".
+12. **M** The calendar dialog shows one card per feed, each with Subscribe (`webcal://`), "Add to Google Calendar" (shown on every device, since `webcal://` often does nothing on Android) and a download fallback, plus the per-phone steps.
+13. **M** Events also show in the app: a "Coming up" list on the Wreath view with a full list one tap away, "This week at church" in the week sheet, and each week's events in the List view. All events show to everyone, labeled by type.
+14. **N** Later: an optional "bring something" or "wear something" note per event.
+
+Note: Google Calendar refreshes subscribed feeds slowly (often many hours, sometimes a day), so same-day changes still need an email or text. Apple Calendar refreshes more often.
 
 ## Ornament, QR code and URL
 
@@ -285,3 +295,4 @@ The first milestone is a simple placeholder demo in the next few days; everythin
 - Visual direction C, "Soft storybook" (`docs/design/`), with the Baloo 2 font self-hosted.
 - Default view is the Advent wreath; the weekly list stays available as the "Week list" view.
 - App name: "Advent Devotional".
+- Church events and rehearsals live in the content file, published as separate calendar feeds plus a combined one, and shown in the app.
