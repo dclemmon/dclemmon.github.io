@@ -1,16 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <title>Advent Follow-Along</title>
-  <rect width="512" height="512" rx="96" fill="#4a2f7a"/>
-  <!-- wreath -->
-  <ellipse cx="256" cy="372" rx="168" ry="44" fill="none" stroke="#7fb08a" stroke-width="28"/>
-  <!-- candles -->
-  <rect x="140" y="230" width="40" height="130" rx="6" fill="#efe6ff"/>
-  <rect x="204" y="200" width="40" height="160" rx="6" fill="#efe6ff"/>
-  <rect x="268" y="200" width="40" height="160" rx="6" fill="#f6c6dc"/>
-  <rect x="332" y="230" width="40" height="130" rx="6" fill="#efe6ff"/>
-  <!-- flames -->
-  <path d="M160 222c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
-  <path d="M224 192c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
-  <path d="M288 192c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
-  <path d="M352 222c-14-16-10-34 0-50 10 16 14 34 0 50z" fill="#ffc94d"/>
+  <title>Advent Devotional</title>
+  <!-- Colors mirror src/theme/tokens.css (an icon file can't read CSS variables). -->
+  <rect width="512" height="512" rx="112" fill="#f4eef8"/>
+  <!-- stars -->
+  <path d="M112 84l10 26 26 10-26 10-10 26-10-26-26-10 26-10z" fill="#e7c96a"/>
+  <path d="M408 132l7 18 18 7-18 7-7 18-7-18-18-7 18-7z" fill="#d9c2ee"/>
+  <!-- glow and flame -->
+  <circle cx="256" cy="148" r="108" fill="#fff1b8"/>
+  <path d="M256 52C302 114 298 176 256 204C214 176 210 114 256 52Z" fill="#f6b24a"/>
+  <path d="M256 118C280 154 277 189 256 200C235 189 232 154 256 118Z" fill="#fff6cf"/>
+  <!-- candle -->
+  <rect x="196" y="212" width="120" height="220" rx="60" fill="#a98bd6"/>
+  <rect x="222" y="242" width="24" height="120" rx="12" fill="#c7b2ea"/>
+  <!-- greenery, kept clear of the tile edge so masks don't cut it -->
+  <circle cx="112" cy="408" r="54" fill="#8dbf9b"/>
+  <circle cx="186" cy="424" r="54" fill="#a7d1b1"/>
+  <circle cx="326" cy="424" r="54" fill="#8dbf9b"/>
+  <circle cx="400" cy="408" r="54" fill="#a7d1b1"/>
+  <circle cx="256" cy="436" r="52" fill="#a7d1b1"/>
+  <circle cx="156" cy="380" r="15" fill="#e98a8a"/>
+  <circle cx="356" cy="380" r="15" fill="#e98a8a"/>
 </svg>
