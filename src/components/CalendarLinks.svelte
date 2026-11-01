@@ -1,5 +1,5 @@
 <script lang="ts">
-  /** "Add to my calendar": one card per feed, each with Subscribe, Google and Download. */
+  /** "Get reminders and events": one card per feed, each with Subscribe, Google and Download. */
   import { FEED_FILES, type Feed } from '../../content/schema.ts';
   import { feedLinks } from '../core/calendar-links.ts';
 
@@ -66,7 +66,7 @@
   {@render content()}
 {:else}
   <details class="panel">
-    <summary>Add to my calendar</summary>
+    <summary>Get reminders and events</summary>
     {@render content()}
   </details>
 {/if}

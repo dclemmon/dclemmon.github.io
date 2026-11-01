@@ -170,7 +170,7 @@
     </p>
     <div class="links">
       <button class="link" type="button" onclick={() => openInfo('calendar')}>
-        Add to calendar
+        Get reminders and events
       </button>
       <button class="link" type="button" onclick={() => openInfo('install')}>
         Add to Home Screen
@@ -205,7 +205,7 @@
 
 <Modal
   open={infoDialog === 'calendar'}
-  title="Add to my calendar"
+  title="Reminders and events"
   variant="sheet"
   focusTitle
   onclose={onInfoClosed}

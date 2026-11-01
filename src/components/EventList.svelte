@@ -79,9 +79,10 @@
     font-weight: var(--font-weight-bold);
   }
 
+  /* Same quiet pill as other tags; the word and the struck-through title say it. */
   .tag.cancel {
-    background: var(--color-celebrate-bg);
-    border: 1px solid var(--color-text-muted);
+    background: var(--color-surface-muted);
+    color: var(--color-text-muted);
   }
 
   .where,

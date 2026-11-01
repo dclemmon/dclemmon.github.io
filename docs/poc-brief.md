@@ -103,7 +103,7 @@ Families can see and subscribe to services, special events and rehearsals alongs
 1. **Content:** a season `timeZone` (`America/Denver`); a `feeds` list with each feed's name and description (editable text); an `events` list with stable IDs, feed, title, date, optional start/end time, place, description, weekly repeat with skipped dates, and a cancelled flag. Validation for all of it. Existing IDs unchanged.
 2. **Core (unit tested):** expanding repeating events, upcoming events, events in a week, and time formatting.
 3. **Feeds:** `advent.ics` (weekly reminders, same file name), `events.ics`, `rehearsals.ics`, `all.ics`. Timed events use the Denver time zone; repeats and skips become one repeating event; IDs never change.
-4. **Calendar dialog:** "Add to my calendar" with a card per feed: Subscribe, Add to Google Calendar (every device) and Download, plus the per-phone steps. The List view's calendar panel shows the same cards.
+4. **Calendar dialog:** "Reminders and events" (opened from "Get reminders and events") with a card per feed: Subscribe, Add to Google Calendar (every device) and Download, plus the per-phone steps. The List view's calendar panel shows the same cards.
 5. **Events in the app:** "Coming up" on the Wreath view with "See all events"; "This week at church" in the week sheet; each week's events in the List view. Every event is shown to everyone, labeled by type.
 
 ### Acceptance checks
@@ -122,7 +122,7 @@ Status after the step 7 pass (Oct 31). **Device** items need the feeds on the li
 
 ### Try on a phone
 
-1. On https://dclemmon.github.io/, open **Add to calendar** and tap **Subscribe** on "Rehearsals" (iPhone) or **Add to Google Calendar** (Android, or any phone using Google Calendar).
+1. On https://dclemmon.github.io/, open **Get reminders and events** and tap **Subscribe** on "Rehearsals" (iPhone) or **Add to Google Calendar** (Android, or any phone using Google Calendar).
 2. Check the pageant rehearsal shows Wednesdays 6–7 pm from Nov 18 to Dec 16, with no rehearsal on Nov 25.
 3. Subscribe to "Services and special events": the Dec 12 cookie decorating should show as cancelled, the Dec 20 pageant at 10–11 am.
 4. Optional: change the phone's time zone and confirm the times shift (e.g. the pageant shows 12–1 pm in Eastern time).

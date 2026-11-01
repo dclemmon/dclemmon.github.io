@@ -212,15 +212,16 @@
     border-top: 1px solid var(--color-border);
   }
 
+  /* Church events follow the activities as a quiet note, not another activity card. */
   .church {
-    padding: var(--space-4) var(--space-5) var(--space-2);
-    border-radius: var(--radius-card);
-    background: var(--color-surface);
-    box-shadow: var(--shadow);
+    --event-rule: var(--color-border);
+    padding: var(--space-3) var(--space-1) 0;
+    border-top: 2px solid var(--color-border);
   }
 
   .church h3 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-heavy);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
   }
 </style>
