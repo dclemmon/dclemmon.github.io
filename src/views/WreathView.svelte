@@ -165,6 +165,7 @@
 <Modal
   open={infoDialog === 'events'}
   title="Coming up at church"
+  variant="sheet"
   focusTitle
   onclose={() => (infoDialog = null)}
 >
@@ -176,6 +177,7 @@
 <Modal
   open={infoDialog === 'calendar'}
   title="Add to my calendar"
+  variant="sheet"
   focusTitle
   onclose={() => (infoDialog = null)}
 >
@@ -185,6 +187,7 @@
 <Modal
   open={infoDialog === 'install'}
   title="Add to Home Screen"
+  variant="sheet"
   focusTitle
   onclose={() => (infoDialog = null)}
 >
