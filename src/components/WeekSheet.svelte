@@ -1,8 +1,10 @@
 <script lang="ts">
   /** A week's activities in a bottom sheet (native <dialog> via Modal). */
+  import { tick } from 'svelte';
   import type { Week } from '../../content/schema.ts';
   import { formatShortDate } from '../core/dates.ts';
   import { sortActivities } from '../core/schedule.ts';
+  import Celebration from './Celebration.svelte';
   import CheckButton from './CheckButton.svelte';
   import Modal from './Modal.svelte';
 
@@ -14,10 +16,26 @@
     onclose: () => void;
     /** Element to return focus to when the sheet closes. */
     opener?: HTMLElement | null;
+    /** The following section, if any; shows a "Next" button. */
+    next?: Week;
+    onNext?: (weekId: string) => void;
   }
-  let { week, isDone, onToggle, onclose, opener }: Props = $props();
+  let { week, isDone, onToggle, onclose, opener, next, onNext }: Props = $props();
 
   const activities = $derived(week ? sortActivities(week.activities) : []);
+  const complete = $derived(activities.length > 0 && activities.every((a) => isDone(a.id)));
+
+  let heading: HTMLHeadingElement | undefined = $state();
+  let body: HTMLDivElement | undefined = $state();
+
+  async function goNext() {
+    if (!next || !onNext) return;
+    onNext(next.id);
+    await tick();
+    // New content in place: start at the top and announce the new week's title.
+    body?.scrollTo({ top: 0 });
+    heading?.focus();
+  }
 </script>
 
 {#if week}
@@ -27,7 +45,15 @@
     title="{week.label} · {week.title}"
     returnTo={opener}
     {onclose}
+    bind:heading
+    bind:body
   >
+    <div role="status">
+      {#if complete}
+        <Celebration total={activities.length} message={week.doneMessage} />
+      {/if}
+    </div>
+
     <ul class="activities">
       {#each activities as activity (activity.id)}
         <li class="card">
@@ -70,10 +96,33 @@
         </li>
       {/each}
     </ul>
+
+    {#snippet actions()}
+      {#if next && onNext}
+        <button class="btn btn-primary next" type="button" onclick={goNext}>
+          Next: {next.label} · {next.title}
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+            ><path d="M5 12h14M13 6l6 6-6 6" /></svg
+          >
+        </button>
+      {/if}
+    {/snippet}
   </Modal>
 {/if}
 
 <style>
+  .next {
+    gap: 0.625rem;
+  }
+
+  .next path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
   .activities {
     display: flex;
     flex-direction: column;

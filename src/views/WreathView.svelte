@@ -4,7 +4,7 @@
   import WeekChips from '../components/WeekChips.svelte';
   import Wreath from '../components/Wreath.svelte';
   import { formatRangeCompact } from '../core/dates.ts';
-  import { getWeekById, litCandles } from '../core/schedule.ts';
+  import { getWeekById, litCandles, nextWeek } from '../core/schedule.ts';
   import { weekStatuses } from '../core/summary.ts';
   import type { ViewProps } from './types.ts';
 
@@ -85,6 +85,11 @@
   onToggle={(id, d) => progress.setDone(id, d)}
   onclose={() => (sheetWeekId = null)}
   {opener}
+  next={sheetWeekId ? nextWeek(season, sheetWeekId) : undefined}
+  onNext={(id) => {
+    sheetWeekId = id;
+    onSelectWeek(id);
+  }}
 />
 
 <style>
