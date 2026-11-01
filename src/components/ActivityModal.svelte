@@ -39,6 +39,13 @@
     font-size: var(--text-sm);
   }
 
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    font-weight: var(--font-weight-bold);
+  }
+
   img {
     max-width: 100%;
     height: auto;

@@ -213,6 +213,14 @@
     color: var(--color-text-muted);
   }
 
+  /* Stand-alone links get a full-size tap target, not just the text line. */
+  .more-body a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    font-weight: var(--font-weight-bold);
+  }
+
   img {
     max-width: 100%;
     height: auto;
