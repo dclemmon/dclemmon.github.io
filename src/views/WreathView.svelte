@@ -120,16 +120,18 @@
   </button>
 
   <footer class="footer">
-    <p>Check marks stay on this device.</p>
-    <button class="link" type="button" onclick={() => (infoDialog = 'reminders')}>
-      Add reminders
-    </button>
-    {#if !progress.isPersistent}
-      <p class="wide">This browser isn't saving them, so they'll clear when you close this page.</p>
-    {/if}
-    <button class="link" type="button" onclick={() => (infoDialog = 'install')}>
-      Add to Home Screen
-    </button>
+    <p>
+      Check marks stay on this device.{#if !progress.isPersistent}
+        This browser isn't saving them, so they'll clear when you close this page.{/if}
+    </p>
+    <div class="links">
+      <button class="link" type="button" onclick={() => (infoDialog = 'reminders')}>
+        Add reminders
+      </button>
+      <button class="link" type="button" onclick={() => (infoDialog = 'install')}>
+        Add to Home Screen
+      </button>
+    </div>
   </footer>
 </main>
 
@@ -186,17 +188,17 @@
 
   .footer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-3);
+    flex-direction: column;
+    gap: var(--space-1);
     margin-top: var(--space-2);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
   }
 
-  .wide {
-    flex-basis: 100%;
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-6);
   }
 
   .link {
