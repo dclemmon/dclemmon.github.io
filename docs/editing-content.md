@@ -34,6 +34,44 @@ All the words in the app live in one file: `content/advent-2026.json`.
 Adding a new activity is fine. Give it a new, unique `id` (lowercase letters, numbers and
 dashes, e.g. `w2-bake-cookies`).
 
+## Church events and rehearsals
+
+Events are near the bottom of the file, under `"events"`. Each one looks like this:
+
+```json
+{
+  "id": "childrens-pageant",
+  "feed": "events",
+  "title": "Children's Christmas pageant",
+  "date": "2026-12-20",
+  "start": "10:00",
+  "end": "11:00",
+  "location": "Sanctuary",
+  "description": "The kids tell the Christmas story during worship."
+}
+```
+
+| Field               | What it is                                                                                      |
+| ------------------- | ----------------------------------------------------------------------------------------------- |
+| `id`                | Stable name for the event. Calendars use it to update the event, so **never change it**        |
+| `feed`              | `"events"` for services and special events, `"rehearsals"` for rehearsals                      |
+| `title`             | Name of the event                                                                               |
+| `date`              | `YYYY-MM-DD`. For a weekly event, the first date                                                |
+| `start`, `end`      | Optional 24-hour times in Denver time, e.g. `"18:30"` for 6:30 pm. Leave both out for all day  |
+| `location`          | Optional place, e.g. `"Fellowship Hall"`                                                       |
+| `description`       | Optional short line about the event                                                             |
+| `repeatWeeklyUntil` | Optional. Repeats on the same weekday every week through this date                              |
+| `skip`              | Optional list of dates a weekly event doesn't happen, e.g. `["2026-11-25"]`                     |
+| `cancelled`         | Optional. Set to `true` to cancel. Don't delete a cancelled event: leaving it in tells subscribed calendars it's off |
+
+- **Changing a time or place:** edit it in place and keep the `id`. Subscribed calendars update the event instead of adding a second one.
+- **Adding an event:** copy an existing one, give it a new unique `id` (lowercase letters, numbers and dashes) and change the details.
+- Times are always Denver time (`"timeZone": "America/Denver"` near the top of the file). Calendars show them in each person's own time zone.
+
+## Calendar names
+
+The names and descriptions of the calendars people can subscribe to are under `"feeds"` near the top of the file. Change any `title`, `description` or `label` (the short word shown on each event in the app, such as "Rehearsal"). Don't change the `id` values (`all`, `reminders`, `events`, `rehearsals`): they name the calendar files.
+
 ## Calendar subscribers
 
 `advent.ics` is rebuilt from this same file, so calendar reminders always match. Google

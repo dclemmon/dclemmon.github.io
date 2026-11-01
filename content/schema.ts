@@ -65,13 +65,57 @@ export interface Messages {
   afterBody: string;
 }
 
+/** The calendar feeds the build publishes. IDs are fixed (they name the .ics files). */
+export const FEED_IDS = ['reminders', 'events', 'rehearsals', 'all'] as const;
+export type FeedId = (typeof FEED_IDS)[number];
+
+/** Feeds an event can belong to (the others are built from weeks, or combine everything). */
+export const EVENT_FEEDS = ['events', 'rehearsals'] as const;
+export type EventFeedId = (typeof EVENT_FEEDS)[number];
+
+/** Display text for a calendar feed. Editable; only `id` is fixed. */
+export interface Feed {
+  id: FeedId;
+  /** Name in the app and in people's calendars, e.g. "Rehearsals". */
+  title: string;
+  /** One line under the name in the calendar dialog. */
+  description: string;
+  /** Short type label shown on each event in the app, e.g. "Rehearsal". Event feeds only. */
+  label?: string;
+}
+
+/** A service, special event or rehearsal. Times are local to `Season.timeZone`. */
+export interface ChurchEvent {
+  /** Stable ID (lowercase slug). Calendar apps match updates by it, so never change it. */
+  id: string;
+  feed: EventFeedId;
+  title: string;
+  /** YYYY-MM-DD; for a repeating event, the first date. */
+  date: string;
+  /** HH:MM, 24-hour. Omit both times for an all-day event. */
+  start?: string;
+  end?: string;
+  location?: string;
+  description?: string;
+  /** Repeat on the same weekday each week through this YYYY-MM-DD date. */
+  repeatWeeklyUntil?: string;
+  /** Dates (YYYY-MM-DD) a weekly event doesn't happen. */
+  skip?: string[];
+  /** Keep cancelled events (instead of deleting) so subscribed calendars update. */
+  cancelled?: boolean;
+}
+
 export interface Season {
   id: string;
   title: string;
   /** Free text shown on the welcome page, e.g. "Placeholder content". */
   notice?: string;
+  /** IANA time zone for event times, e.g. "America/Denver". */
+  timeZone: string;
   messages: Messages;
+  feeds: Feed[];
   weeks: Week[];
+  events: ChurchEvent[];
 }
 
 export interface ValidationResult {
@@ -81,11 +125,35 @@ export interface ValidationResult {
 
 const ID_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 /** Earliest and latest dates any content may use. */
 export const SEASON_BOUNDS = { start: '2026-11-29', end: '2026-12-25' } as const;
 
-const KNOWN_SEASON = new Set(['id', 'title', 'notice', 'messages', 'weeks']);
+const KNOWN_SEASON = new Set([
+  'id',
+  'title',
+  'notice',
+  'timeZone',
+  'messages',
+  'feeds',
+  'weeks',
+  'events',
+]);
+const KNOWN_FEED = new Set(['id', 'title', 'description', 'label']);
+const KNOWN_EVENT = new Set([
+  'id',
+  'feed',
+  'title',
+  'date',
+  'start',
+  'end',
+  'location',
+  'description',
+  'repeatWeeklyUntil',
+  'skip',
+  'cancelled',
+]);
 const KNOWN_WEEK = new Set([
   'id',
   'kind',
@@ -133,6 +201,22 @@ function nextIsoDate(s: string): string {
   const mm = String(dt.getMonth() + 1).padStart(2, '0');
   const dd = String(dt.getDate()).padStart(2, '0');
   return `${dt.getFullYear()}-${mm}-${dd}`;
+}
+
+/** True if `tz` is an IANA time zone this JavaScript engine knows. */
+export function isValidTimeZone(tz: unknown): tz is string {
+  if (typeof tz !== 'string' || !tz) return false;
+  try {
+    new Intl.DateTimeFormat('en-US', { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function weekday(iso: string): number {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).getDay();
 }
 
 function isSafeHref(href: string): boolean {
@@ -202,6 +286,12 @@ export function validateSeason(data: unknown): ValidationResult {
       'season.messages',
     );
   }
+
+  if (!isValidTimeZone(data.timeZone)) {
+    errors.push('season: "timeZone" must be a time zone name like "America/Denver"');
+  }
+
+  validateFeeds(data.feeds, errors, warnings);
 
   if (!Array.isArray(data.weeks) || data.weeks.length === 0) {
     errors.push('season: "weeks" must be a non-empty list');
@@ -322,6 +412,8 @@ export function validateSeason(data: unknown): ValidationResult {
     });
   });
 
+  validateEvents(data.events, checkId, errors, warnings);
+
   return { errors, warnings };
 }
 
@@ -332,4 +424,122 @@ export function parseSeason(data: unknown): Season {
     throw new Error(`Invalid content:\n- ${errors.join('\n- ')}`);
   }
   return data as Season;
+}
+
+function validateFeeds(feeds: unknown, errors: string[], warnings: string[]): void {
+  if (!Array.isArray(feeds)) {
+    errors.push('season: "feeds" must be a list');
+    return;
+  }
+  const seen = new Set<string>();
+  feeds.forEach((feed: unknown, i: number) => {
+    const where = `feeds[${i}]`;
+    if (!isObject(feed)) {
+      errors.push(`${where}: must be an object`);
+      return;
+    }
+    const name = isNonEmptyString(feed.id) ? `feed "${feed.id}"` : where;
+    warnUnknown(feed, KNOWN_FEED, name, warnings);
+    if (!(FEED_IDS as readonly unknown[]).includes(feed.id)) {
+      errors.push(`${where}: "id" must be one of ${FEED_IDS.map((f) => `"${f}"`).join(', ')}`);
+    } else if (seen.has(feed.id as string)) {
+      errors.push(`${name}: listed twice`);
+    } else {
+      seen.add(feed.id as string);
+    }
+    for (const f of ['title', 'description']) {
+      if (!isNonEmptyString(feed[f])) errors.push(`${name}: missing or empty "${f}"`);
+    }
+    if (feed.label !== undefined && !isNonEmptyString(feed.label)) {
+      errors.push(`${name}: "label" must be non-empty text if present`);
+    }
+    if ((EVENT_FEEDS as readonly unknown[]).includes(feed.id) && feed.label === undefined) {
+      errors.push(`${name}: needs a "label" (shown on each event, e.g. "Rehearsal")`);
+    }
+  });
+  for (const id of FEED_IDS) {
+    if (!seen.has(id)) errors.push(`season: "feeds" is missing the "${id}" feed`);
+  }
+}
+
+function validateEvents(
+  events: unknown,
+  checkId: (id: unknown, where: string) => void,
+  errors: string[],
+  warnings: string[],
+): void {
+  if (events === undefined) return;
+  if (!Array.isArray(events)) {
+    errors.push('season: "events" must be a list');
+    return;
+  }
+  events.forEach((ev: unknown, i: number) => {
+    const where = `events[${i}]`;
+    if (!isObject(ev)) {
+      errors.push(`${where}: must be an object`);
+      return;
+    }
+    const name = isNonEmptyString(ev.id) ? `event "${ev.id}"` : where;
+    warnUnknown(ev, KNOWN_EVENT, name, warnings);
+    checkId(ev.id, name);
+    if (!isNonEmptyString(ev.title)) errors.push(`${name}: missing or empty "title"`);
+    if (!(EVENT_FEEDS as readonly unknown[]).includes(ev.feed)) {
+      errors.push(`${name}: "feed" must be ${EVENT_FEEDS.map((f) => `"${f}"`).join(' or ')}`);
+    }
+    for (const f of ['location', 'description']) {
+      if (ev[f] !== undefined && !isNonEmptyString(ev[f])) {
+        errors.push(`${name}: "${f}" must be non-empty text if present`);
+      }
+    }
+    if (ev.cancelled !== undefined && typeof ev.cancelled !== 'boolean') {
+      errors.push(`${name}: "cancelled" must be true or false`);
+    }
+
+    const dateOk = isValidIsoDate(ev.date);
+    if (!dateOk) errors.push(`${name}: "date" must be YYYY-MM-DD`);
+
+    for (const f of ['start', 'end']) {
+      if (ev[f] !== undefined && (typeof ev[f] !== 'string' || !TIME_RE.test(ev[f]))) {
+        errors.push(`${name}: "${f}" must be a 24-hour time like "18:30"`);
+      }
+    }
+    if (ev.end !== undefined && ev.start === undefined) {
+      errors.push(`${name}: has an "end" time but no "start" time`);
+    }
+    if (
+      typeof ev.start === 'string' &&
+      typeof ev.end === 'string' &&
+      TIME_RE.test(ev.start) &&
+      TIME_RE.test(ev.end) &&
+      ev.end <= ev.start
+    ) {
+      errors.push(`${name}: "end" (${ev.end}) must be after "start" (${ev.start})`);
+    }
+
+    const until = ev.repeatWeeklyUntil;
+    if (until !== undefined) {
+      if (!isValidIsoDate(until)) {
+        errors.push(`${name}: "repeatWeeklyUntil" must be YYYY-MM-DD`);
+      } else if (dateOk && until < (ev.date as string)) {
+        errors.push(`${name}: "repeatWeeklyUntil" (${until}) is before "date" (${ev.date})`);
+      }
+    }
+
+    if (ev.skip !== undefined) {
+      if (until === undefined) errors.push(`${name}: "skip" only applies to repeating events`);
+      if (!Array.isArray(ev.skip)) {
+        errors.push(`${name}: "skip" must be a list of dates`);
+      } else {
+        for (const d of ev.skip) {
+          if (!isValidIsoDate(d)) {
+            errors.push(`${name}: skip date "${String(d)}" must be YYYY-MM-DD`);
+          } else if (dateOk && isValidIsoDate(until)) {
+            if (d < (ev.date as string) || d > until || weekday(d) !== weekday(ev.date as string)) {
+              warnings.push(`${name}: skip date ${d} isn't one of this event's weekly dates`);
+            }
+          }
+        }
+      }
+    }
+  });
 }

@@ -2,12 +2,37 @@
   "id": "advent-2026",
   "title": "Advent Devotional",
   "notice": "Sample content for review. Final activities are coming soon.",
+  "timeZone": "America/Denver",
   "messages": {
     "beforeTitle": "Advent starts Sunday, November 29",
     "beforeBody": "Each week brings a few simple things to do together at home. Take a look at Week 1 now, and come back on the first Sunday of Advent.",
     "afterTitle": "Merry Christmas!",
     "afterBody": "Thank you for following along this Advent. All the weeks are still here if you'd like to look back."
   },
+  "feeds": [
+    {
+      "id": "all",
+      "title": "Everything",
+      "description": "Weekly reminders, services, special events and rehearsals in one calendar."
+    },
+    {
+      "id": "reminders",
+      "title": "Weekly reminders",
+      "description": "A reminder each Sunday of Advent and on Christmas Eve."
+    },
+    {
+      "id": "events",
+      "title": "Services and special events",
+      "description": "Christmas services, the pageant and family events.",
+      "label": "Event"
+    },
+    {
+      "id": "rehearsals",
+      "title": "Rehearsals",
+      "description": "Practice times for kids in the Christmas pageant.",
+      "label": "Rehearsal"
+    }
+  ],
   "weeks": [
     {
       "id": "week-1",
@@ -177,6 +202,81 @@
           "date": "2026-12-25"
         }
       ]
+    }
+  ],
+  "events": [
+    {
+      "id": "pageant-rehearsal",
+      "feed": "rehearsals",
+      "title": "Pageant rehearsal",
+      "date": "2026-11-18",
+      "start": "18:00",
+      "end": "19:00",
+      "location": "Fellowship Hall",
+      "description": "Weekly practice for kids in the Christmas pageant. Sample event.",
+      "repeatWeeklyUntil": "2026-12-16",
+      "skip": ["2026-11-25"]
+    },
+    {
+      "id": "advent-family-night",
+      "feed": "events",
+      "title": "Advent family night",
+      "date": "2026-11-29",
+      "start": "17:00",
+      "end": "18:30",
+      "location": "Fellowship Hall",
+      "description": "Make Advent wreaths together and share a simple supper. Sample event."
+    },
+    {
+      "id": "cookie-decorating",
+      "feed": "events",
+      "title": "Cookie decorating",
+      "date": "2026-12-12",
+      "start": "14:00",
+      "end": "15:30",
+      "location": "Church kitchen",
+      "description": "Decorate cookies to share with neighbors. Sample event.",
+      "cancelled": true
+    },
+    {
+      "id": "pageant-dress-rehearsal",
+      "feed": "rehearsals",
+      "title": "Pageant dress rehearsal",
+      "date": "2026-12-19",
+      "start": "09:00",
+      "end": "11:00",
+      "location": "Sanctuary",
+      "description": "Full run-through in costume. Sample event."
+    },
+    {
+      "id": "childrens-pageant",
+      "feed": "events",
+      "title": "Children's Christmas pageant",
+      "date": "2026-12-20",
+      "start": "10:00",
+      "end": "11:00",
+      "location": "Sanctuary",
+      "description": "The kids tell the Christmas story during worship. Sample event."
+    },
+    {
+      "id": "christmas-eve-family-service",
+      "feed": "events",
+      "title": "Christmas Eve family service",
+      "date": "2026-12-24",
+      "start": "16:00",
+      "end": "17:00",
+      "location": "Sanctuary",
+      "description": "A short candlelight service for families with young children. Sample event."
+    },
+    {
+      "id": "christmas-day-worship",
+      "feed": "events",
+      "title": "Christmas Day worship",
+      "date": "2026-12-25",
+      "start": "10:00",
+      "end": "11:00",
+      "location": "Sanctuary",
+      "description": "Celebrate Jesus' birth together. Sample event."
     }
   ]
 }

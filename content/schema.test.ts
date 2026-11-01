@@ -98,6 +98,95 @@ describe('validateSeason', () => {
   });
 });
 
+describe('feeds, events and time zone', () => {
+  const ev = (d: Record<string, any>, id: string) => d.events.find((e: any) => e.id === id); // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  it('needs a real time zone', () => {
+    const d = clone();
+    d.timeZone = 'Denver';
+    expect(validateSeason(d).errors.join()).toMatch(/"timeZone" must be a time zone name/);
+  });
+
+  it('needs all four feeds, each with a title and description', () => {
+    const d = clone();
+    d.feeds = d.feeds.filter((f: { id: string }) => f.id !== 'rehearsals');
+    d.feeds[0].title = '';
+    d.feeds.push({ id: 'podcast', title: 'x', description: 'y' });
+    const { errors } = validateSeason(d);
+    expect(errors.join()).toMatch(/missing the "rehearsals" feed/);
+    expect(errors.join()).toMatch(/feed "all": missing or empty "title"/);
+    expect(errors.join()).toMatch(/"id" must be one of/);
+  });
+
+  it('event feeds need a label for the app', () => {
+    const d = clone();
+    delete d.feeds.find((f: { id: string }) => f.id === 'events').label;
+    expect(validateSeason(d).errors.join()).toMatch(/feed "events": needs a "label"/);
+  });
+
+  it('feed names can be changed freely', () => {
+    const d = clone();
+    d.feeds.find((f: { id: string }) => f.id === 'rehearsals').title = 'Pageant practice';
+    expect(validateSeason(d)).toEqual({ errors: [], warnings: [] });
+  });
+
+  it('rejects bad event fields', () => {
+    const d = clone();
+    ev(d, 'advent-family-night').feed = 'parties';
+    ev(d, 'cookie-decorating').start = '2pm';
+    ev(d, 'childrens-pageant').end = '09:00'; // before its 10:00 start
+    ev(d, 'christmas-day-worship').date = '2026-12-32';
+    delete ev(d, 'pageant-dress-rehearsal').start; // end without start
+    const { errors } = validateSeason(d);
+    expect(errors.join()).toMatch(/advent-family-night.*"feed" must be/);
+    expect(errors.join()).toMatch(/cookie-decorating.*24-hour time/);
+    expect(errors.join()).toMatch(/childrens-pageant.*"end" \(09:00\) must be after "start"/);
+    expect(errors.join()).toMatch(/christmas-day-worship.*"date" must be YYYY-MM-DD/);
+    expect(errors.join()).toMatch(/pageant-dress-rehearsal.*"end" time but no "start"/);
+  });
+
+  it('event IDs share the namespace with weeks and activities', () => {
+    const d = clone();
+    ev(d, 'advent-family-night').id = 'w1-hope-jar';
+    expect(validateSeason(d).errors.join()).toMatch(/duplicate id "w1-hope-jar"/);
+  });
+
+  it('checks repeats and skipped dates', () => {
+    const d = clone();
+    const r = ev(d, 'pageant-rehearsal');
+    r.skip = ['2026-11-26']; // a Thursday, not a Wednesday rehearsal
+    let res = validateSeason(d);
+    expect(res.errors).toEqual([]);
+    expect(res.warnings.join()).toMatch(
+      /skip date 2026-11-26 isn't one of this event's weekly dates/,
+    );
+
+    r.repeatWeeklyUntil = '2026-11-01';
+    expect(validateSeason(d).errors.join()).toMatch(/"repeatWeeklyUntil" \(2026-11-01\) is before/);
+
+    const once = ev(d, 'childrens-pageant');
+    once.skip = ['2026-12-20'];
+    res = validateSeason(d);
+    expect(res.errors.join()).toMatch(/childrens-pageant.*"skip" only applies to repeating events/);
+  });
+
+  it('cancelled must be true or false', () => {
+    const d = clone();
+    ev(d, 'cookie-decorating').cancelled = 'yes';
+    expect(validateSeason(d).errors.join()).toMatch(/"cancelled" must be true or false/);
+  });
+
+  it('events are optional and may be all-day', () => {
+    const d = clone();
+    const e = ev(d, 'advent-family-night');
+    delete e.start;
+    delete e.end;
+    expect(validateSeason(d).errors).toEqual([]);
+    delete d.events;
+    expect(validateSeason(d).errors).toEqual([]);
+  });
+});
+
 /**
  * Saved check-offs are keyed by these IDs. Renaming or removing one silently wipes
  * families' progress, so this list may only grow. Adding new IDs is fine.
