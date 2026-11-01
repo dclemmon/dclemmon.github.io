@@ -1,16 +1,20 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { config, season } from './config.ts';
+  import SiteHeader from './components/SiteHeader.svelte';
+  import { resolveView } from './core/preferences.ts';
   import { createProgress } from './core/progress.ts';
   import { getDateOverride, getSeasonState, getToday, weekIdFromHash } from './core/schedule.ts';
   import { createStorage } from './core/storage.ts';
   import { reactiveProgress } from './lib/progress.svelte.ts';
-  import { views } from './views/index.ts';
+  import { viewNames, views } from './views/index.ts';
 
   const search = window.location.search;
   const seasonState = getSeasonState(season, getToday(search));
   const previewDate = getDateOverride(search);
-  const progress = reactiveProgress(createProgress(createStorage()));
+  const storage = createStorage();
+  const progress = reactiveProgress(createProgress(storage));
+  const viewName = resolveView(search, storage, viewNames, config.defaultView);
 
   // A #week-id in the URL (e.g. from a calendar reminder) picks the starting week.
   let selectedWeekId = $state(
@@ -34,7 +38,9 @@
     return () => window.removeEventListener('hashchange', onHash);
   });
 
-  const View = views[config.view];
+  const View = $derived(views[viewName].component);
 </script>
+
+<SiteHeader title={season.title} notice={season.notice} {previewDate} />
 
 <View {season} {seasonState} {previewDate} {selectedWeekId} onSelectWeek={selectWeek} {progress} />

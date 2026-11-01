@@ -8,12 +8,11 @@
   import Modal from '../components/Modal.svelte';
   import Progress from '../components/Progress.svelte';
   import WeekNav from '../components/WeekNav.svelte';
-  import { formatLongDate, formatRange } from '../core/dates.ts';
+  import { formatRange } from '../core/dates.ts';
   import { getWeekById, sortActivities } from '../core/schedule.ts';
   import type { ViewProps } from './types.ts';
 
-  let { season, seasonState, previewDate, selectedWeekId, onSelectWeek, progress }: ViewProps =
-    $props();
+  let { season, seasonState, selectedWeekId, onSelectWeek, progress }: ViewProps = $props();
 
   const week = $derived(getWeekById(season, selectedWeekId) ?? season.weeks[0]);
   const activities = $derived(sortActivities(week.activities));
@@ -38,14 +37,6 @@
 </script>
 
 <div class="page">
-  <header class="site-header">
-    <h1>{season.title}</h1>
-    {#if season.notice}<p class="notice">{season.notice}</p>{/if}
-    {#if previewDate}
-      <p class="notice">Previewing as if today were {formatLongDate(previewDate)}.</p>
-    {/if}
-  </header>
-
   <main>
     {#if seasonState.phase === 'before'}
       <section class="banner" aria-labelledby="banner-title">
@@ -147,25 +138,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-6);
-  }
-
-  .site-header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  h1 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-bold);
-  }
-
-  .notice {
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-chip);
-    background: var(--color-celebrate-bg);
-    color: var(--color-text);
-    font-size: var(--text-sm);
   }
 
   main {
