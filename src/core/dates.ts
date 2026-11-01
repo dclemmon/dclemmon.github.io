@@ -73,3 +73,32 @@ export function formatRangeCompact(startIso: string, endIso: string, locale = 'e
     : formatMonthDay(endIso, locale);
   return `${formatMonthDay(startIso, locale)} – ${end}`;
 }
+
+function parseTime(hhmm: string): { h: number; m: number } | null {
+  const match = /^(\d{2}):(\d{2})$/.exec(hhmm);
+  return match ? { h: Number(match[1]), m: Number(match[2]) } : null;
+}
+
+const clock = ({ h, m }: { h: number; m: number }) =>
+  `${h % 12 === 0 ? 12 : h % 12}:${String(m).padStart(2, '0')}`;
+const meridiem = (h: number) => (h < 12 ? 'am' : 'pm');
+
+/** "18:00" → "6:00 pm". */
+export function formatTime(hhmm: string): string {
+  const t = parseTime(hhmm);
+  return t ? `${clock(t)} ${meridiem(t.h)}` : hhmm;
+}
+
+/**
+ * Event times for display: "6:00 – 7:00 pm", "11:30 am – 12:30 pm", "6:00 pm",
+ * or "All day" when there's no start time.
+ */
+export function formatTimeRange(start?: string, end?: string): string {
+  const s = start ? parseTime(start) : null;
+  if (!s) return 'All day';
+  const e = end ? parseTime(end) : null;
+  if (!e) return formatTime(start!);
+  return meridiem(s.h) === meridiem(e.h)
+    ? `${clock(s)} – ${clock(e)} ${meridiem(e.h)}`
+    : `${formatTime(start!)} – ${formatTime(end!)}`;
+}

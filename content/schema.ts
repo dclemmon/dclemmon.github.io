@@ -115,7 +115,8 @@ export interface Season {
   messages: Messages;
   feeds: Feed[];
   weeks: Week[];
-  events: ChurchEvent[];
+  /** Optional; a season can have no church events. */
+  events?: ChurchEvent[];
 }
 
 export interface ValidationResult {
