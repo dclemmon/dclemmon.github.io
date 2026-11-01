@@ -35,11 +35,33 @@
   const sheetWeek = $derived(sheetWeekId ? (getWeekById(season, sheetWeekId) ?? null) : null);
 
   /*
-    Android Back: opening the sheet adds one history entry, so Back closes the sheet
-    instead of leaving the app. "Next" replaces that entry, so one Back always closes it.
+    Android Back: opening a sheet (a week, the events list, the calendar or Home Screen
+    help) adds one history entry, so Back closes it instead of leaving the app. "Next"
+    replaces that entry, so one Back always closes the week sheet.
   */
   const SHEET_STATE = 'advent-sheet';
   let pushedHistory = false;
+
+  let infoDialog: 'calendar' | 'install' | 'events' | null = $state(null);
+
+  function openInfo(kind: 'calendar' | 'install' | 'events') {
+    infoDialog = kind;
+    history.pushState({ [SHEET_STATE]: kind }, '');
+    pushedHistory = true;
+  }
+
+  /** Closed with the button, Escape or the backdrop: remove the entry we added. */
+  function popOurEntry() {
+    if (pushedHistory) {
+      pushedHistory = false;
+      history.back();
+    }
+  }
+
+  function onInfoClosed() {
+    infoDialog = null;
+    popOurEntry();
+  }
 
   function openWeek(id: string, from: HTMLElement | null = null) {
     opener = from;
@@ -61,19 +83,16 @@
 
   function onSheetClosed() {
     sheetWeekId = null;
-    // Closed with the button, Escape or the backdrop: remove the entry we added.
-    if (pushedHistory) {
-      pushedHistory = false;
-      history.back();
-    }
+    popOurEntry();
   }
 
   $effect(() => {
     const onPop = () => {
-      // Back (or a swipe) while the sheet is open: just close it.
-      if (sheetWeekId !== null && pushedHistory) {
+      // Back (or a swipe) while a sheet is open: just close it.
+      if (pushedHistory && (sheetWeekId !== null || infoDialog !== null)) {
         pushedHistory = false;
         sheetWeekId = null;
+        infoDialog = null;
       }
     };
     window.addEventListener('popstate', onPop);
@@ -86,8 +105,6 @@
     const link = linkedWeek;
     if (link) untrack(() => openWeek(link.id));
   });
-
-  let infoDialog: 'calendar' | 'install' | 'events' | null = $state(null);
 
   const upcoming = $derived(upcomingEvents(season, seasonState.today));
   const COMING_UP = 3;
@@ -128,7 +145,7 @@
     <section class="coming-up" aria-labelledby="coming-up">
       <h3 id="coming-up">Coming up</h3>
       <EventList events={upcoming.slice(0, COMING_UP)} feeds={season.feeds} />
-      <button class="link" type="button" onclick={() => (infoDialog = 'events')}>
+      <button class="link" type="button" onclick={() => openInfo('events')}>
         See all events
       </button>
     </section>
@@ -140,10 +157,10 @@
         This browser isn't saving them, so they'll clear when you close this page.{/if}
     </p>
     <div class="links">
-      <button class="link" type="button" onclick={() => (infoDialog = 'calendar')}>
+      <button class="link" type="button" onclick={() => openInfo('calendar')}>
         Add to calendar
       </button>
-      <button class="link" type="button" onclick={() => (infoDialog = 'install')}>
+      <button class="link" type="button" onclick={() => openInfo('install')}>
         Add to Home Screen
       </button>
     </div>
@@ -167,7 +184,7 @@
   title="Coming up at church"
   variant="sheet"
   focusTitle
-  onclose={() => (infoDialog = null)}
+  onclose={onInfoClosed}
 >
   <div class="all-events">
     <EventList events={upcoming} feeds={season.feeds} details />
@@ -179,7 +196,7 @@
   title="Add to my calendar"
   variant="sheet"
   focusTitle
-  onclose={() => (infoDialog = null)}
+  onclose={onInfoClosed}
 >
   <CalendarLinks feeds={season.feeds} inline />
 </Modal>
@@ -189,7 +206,7 @@
   title="Add to Home Screen"
   variant="sheet"
   focusTitle
-  onclose={() => (infoDialog = null)}
+  onclose={onInfoClosed}
 >
   <InstallTip inline />
 </Modal>
