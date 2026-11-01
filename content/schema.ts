@@ -69,6 +69,14 @@ export interface Messages {
 export const FEED_IDS = ['reminders', 'events', 'rehearsals', 'all'] as const;
 export type FeedId = (typeof FEED_IDS)[number];
 
+/** Published file for each feed. advent.ics keeps its name so existing subscribers keep it. */
+export const FEED_FILES: Record<FeedId, string> = {
+  reminders: 'advent.ics',
+  events: 'events.ics',
+  rehearsals: 'rehearsals.ics',
+  all: 'all.ics',
+};
+
 /** Feeds an event can belong to (the others are built from weeks, or combine everything). */
 export const EVENT_FEEDS = ['events', 'rehearsals'] as const;
 export type EventFeedId = (typeof EVENT_FEEDS)[number];

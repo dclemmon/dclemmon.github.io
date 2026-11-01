@@ -50,7 +50,7 @@ export default defineConfig({
             options: { cacheName: 'pages', networkTimeoutSeconds: 3 },
           },
           {
-            urlPattern: ({ url }) => url.pathname.endsWith('/advent.ics'),
+            urlPattern: ({ url }) => url.pathname.endsWith('.ics'),
             handler: 'NetworkFirst',
             options: { cacheName: 'calendar', networkTimeoutSeconds: 3 },
           },

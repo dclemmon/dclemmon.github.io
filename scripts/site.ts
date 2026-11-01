@@ -1,7 +1,7 @@
 /**
  * Deployment settings shared by vite.config.ts and the build scripts.
  * BASE_PATH: path the app is served under ("/" for a domain or subdomain root).
- * SITE_URL: origin used for absolute links in advent.ics.
+ * SITE_URL: origin used for absolute links in the .ics calendar feeds.
  */
 export function basePath(): string {
   let base = process.env.BASE_PATH ?? '/';
