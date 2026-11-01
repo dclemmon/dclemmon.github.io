@@ -8,7 +8,7 @@ import { parseSeason } from '../content/schema.ts';
 import type { ViewName } from './views/index.ts';
 
 export const config: { defaultView: ViewName } = {
-  defaultView: 'list',
+  defaultView: 'wreath',
 };
 
 export const season = parseSeason(seasonData);
