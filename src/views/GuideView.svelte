@@ -4,11 +4,13 @@
   import ActivityCard from '../components/ActivityCard.svelte';
   import ActivityModal from '../components/ActivityModal.svelte';
   import CalendarLinks from '../components/CalendarLinks.svelte';
+  import EventList from '../components/EventList.svelte';
   import InstallTip from '../components/InstallTip.svelte';
   import Modal from '../components/Modal.svelte';
   import Progress from '../components/Progress.svelte';
   import WeekNav from '../components/WeekNav.svelte';
   import { formatRange } from '../core/dates.ts';
+  import { eventsInWeek } from '../core/events.ts';
   import { getWeekById, sortActivities } from '../core/schedule.ts';
   import type { ViewProps } from './types.ts';
 
@@ -16,6 +18,7 @@
 
   const week = $derived(getWeekById(season, selectedWeekId) ?? season.weeks[0]);
   const activities = $derived(sortActivities(week.activities));
+  const weekEvents = $derived(eventsInWeek(season, week));
   const isCurrent = $derived(week.id === seasonState.currentWeekId);
   const currentWeek = $derived(getWeekById(season, seasonState.currentWeekId));
 
@@ -91,6 +94,13 @@
           </li>
         {/each}
       </ul>
+
+      {#if weekEvents.length > 0}
+        <section class="church" aria-labelledby="list-church">
+          <h3 id="list-church">This week at church</h3>
+          <EventList events={weekEvents} feeds={season.feeds} details />
+        </section>
+      {/if}
     </section>
   </main>
 
@@ -200,5 +210,17 @@
     gap: var(--space-4);
     padding-top: var(--space-5);
     border-top: 1px solid var(--color-border);
+  }
+
+  .church {
+    padding: var(--space-4) var(--space-5) var(--space-2);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow);
+  }
+
+  .church h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-heavy);
   }
 </style>

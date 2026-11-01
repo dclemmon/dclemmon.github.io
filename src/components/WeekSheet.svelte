@@ -1,11 +1,13 @@
 <script lang="ts">
   /** A week's activities in a bottom sheet (native <dialog> via Modal). */
   import { tick } from 'svelte';
-  import type { Week } from '../../content/schema.ts';
+  import type { Feed, Week } from '../../content/schema.ts';
+  import type { EventOccurrence } from '../core/events.ts';
   import { formatShortDate } from '../core/dates.ts';
   import { sortActivities } from '../core/schedule.ts';
   import Celebration from './Celebration.svelte';
   import CheckButton from './CheckButton.svelte';
+  import EventList from './EventList.svelte';
   import Modal from './Modal.svelte';
 
   interface Props {
@@ -19,8 +21,21 @@
     /** The following section, if any; shows a "Next" button. */
     next?: Week;
     onNext?: (weekId: string) => void;
+    /** Church events for a week, shown as "This week at church". */
+    eventsFor?: (week: Week) => EventOccurrence[];
+    feeds?: Feed[];
   }
-  let { week, isDone, onToggle, onclose, opener, next, onNext }: Props = $props();
+  let {
+    week,
+    isDone,
+    onToggle,
+    onclose,
+    opener,
+    next,
+    onNext,
+    eventsFor,
+    feeds = [],
+  }: Props = $props();
 
   // Keep showing the last week while the dialog closes (e.g. after Android Back), so the
   // close goes through the native <dialog> and focus returns to the opener.
@@ -30,6 +45,7 @@
   });
 
   const activities = $derived(shown ? sortActivities(shown.activities) : []);
+  const churchEvents = $derived(shown && eventsFor ? eventsFor(shown) : []);
   const complete = $derived(activities.length > 0 && activities.every((a) => isDone(a.id)));
 
   let heading: HTMLHeadingElement | undefined = $state();
@@ -60,6 +76,13 @@
         <Celebration total={activities.length} message={shown.doneMessage} />
       {/if}
     </div>
+
+    {#if churchEvents.length > 0}
+      <section class="church" aria-labelledby="sheet-church">
+        <h3 id="sheet-church" class="church-title">This week at church</h3>
+        <EventList events={churchEvents} {feeds} />
+      </section>
+    {/if}
 
     <ul class="activities">
       {#each activities as activity (activity.id)}
@@ -128,6 +151,17 @@
     stroke-width: 3;
     stroke-linecap: round;
     stroke-linejoin: round;
+  }
+
+  .church {
+    padding: var(--space-3) var(--space-4) var(--space-1);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+  }
+
+  .church-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-heavy);
   }
 
   .activities {

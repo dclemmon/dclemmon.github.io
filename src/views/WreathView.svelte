@@ -1,6 +1,7 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import CalendarLinks from '../components/CalendarLinks.svelte';
+  import EventList from '../components/EventList.svelte';
   import InstallTip from '../components/InstallTip.svelte';
   import Modal from '../components/Modal.svelte';
   import Progress from '../components/Progress.svelte';
@@ -8,6 +9,7 @@
   import WeekChips from '../components/WeekChips.svelte';
   import Wreath from '../components/Wreath.svelte';
   import { formatRangeCompact } from '../core/dates.ts';
+  import { eventsInWeek, upcomingEvents } from '../core/events.ts';
   import { getWeekById, litCandles, nextWeek } from '../core/schedule.ts';
   import { weekStatuses } from '../core/summary.ts';
   import type { ViewProps } from './types.ts';
@@ -85,7 +87,10 @@
     if (link) untrack(() => openWeek(link.id));
   });
 
-  let infoDialog: 'calendar' | 'install' | null = $state(null);
+  let infoDialog: 'calendar' | 'install' | 'events' | null = $state(null);
+
+  const upcoming = $derived(upcomingEvents(season, seasonState.today));
+  const COMING_UP = 3;
 </script>
 
 <main class="page">
@@ -119,6 +124,16 @@
     {buttonLabel}
   </button>
 
+  {#if upcoming.length > 0}
+    <section class="coming-up" aria-labelledby="coming-up">
+      <h3 id="coming-up">Coming up</h3>
+      <EventList events={upcoming.slice(0, COMING_UP)} feeds={season.feeds} />
+      <button class="link" type="button" onclick={() => (infoDialog = 'events')}>
+        See all events
+      </button>
+    </section>
+  {/if}
+
   <footer class="footer">
     <p>
       Check marks stay on this device.{#if !progress.isPersistent}
@@ -143,7 +158,20 @@
   {opener}
   next={sheetWeekId ? nextWeek(season, sheetWeekId) : undefined}
   onNext={showNextWeek}
+  eventsFor={(w) => eventsInWeek(season, w)}
+  feeds={season.feeds}
 />
+
+<Modal
+  open={infoDialog === 'events'}
+  title="Coming up at church"
+  focusTitle
+  onclose={() => (infoDialog = null)}
+>
+  <div class="all-events">
+    <EventList events={upcoming} feeds={season.feeds} details />
+  </div>
+</Modal>
 
 <Modal
   open={infoDialog === 'calendar'}
@@ -222,5 +250,28 @@
 
   .link:hover {
     color: var(--color-accent-hover);
+  }
+
+  .coming-up {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4) var(--space-4) var(--space-1);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+  }
+
+  .coming-up h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-heavy);
+  }
+
+  .coming-up .link {
+    align-self: flex-start;
+  }
+
+  .all-events {
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
   }
 </style>
