@@ -60,26 +60,39 @@ The audience is now the Children & Family ministries: parents and kids (preschoo
 
 ### Acceptance checks
 
-- [ ] `npm test` passes, including new tests for lit candles, week timing and status, the view preference, compact date formats, the new schema fields and the stable-ID guard.
-- [ ] `npm run build` passes, and fails on an invalid or duplicate `candle`.
-- [ ] With nothing saved, the app opens to the Wreath view. `?view=list` shows the Week list without changing the saved choice. The switcher's choice survives a reload.
-- [ ] `?date=2026-12-08` shows "Dec 6 – 12", "Week 2 · Peace", 2 candles lit, Hope done (if checked), Peace "Now", and Joy, Love and Jesus with their dates.
-- [ ] Dec 24 lights the Christ candle. Nov 28 lights nothing. Dec 26 lights all five.
-- [ ] Chips and "See this week's activities" open the week sheet. Escape and the close button close it, and focus returns to the opener.
-- [ ] Checking every activity shows "You did it!" and a screen reader announces it. "Next" moves to the following week.
-- [ ] Check-offs made in iteration 1 still show as done.
-- [ ] The wreath home and week sheet match `docs/design/reference/*.html`, apart from the corrections in the design notes.
-- [ ] The Week list behaves exactly as in iteration 1, restyled.
-- [ ] No hex colors outside `tokens.css`, apart from the commented manifest values.
-- [ ] Baloo 2 is served from the app's own origin; no third-party requests.
-- [ ] With reduced motion on, nothing animates.
-- [ ] Primary buttons, check buttons and week chips are at least 56px; everything else tappable is at least 44px. Every icon has visible text.
-- [ ] Usable at 360px and on desktop, with no horizontal scroll at 200% text.
-- [ ] Lighthouse accessibility ≥ 95 on both views; no console errors; first load < 500 KB.
-- [ ] The app shows as "Advent Devotional" (header, tab title, install name). Calendar subscribers see renamed events, not duplicates.
-- [ ] Android Back closes an open week sheet without leaving the app.
-- [ ] New icons look right on iPhone and Android Home Screens, including the maskable crop.
-- [ ] Add to Home Screen works on an iPhone and an Android phone. Private browsing works without errors.
+Status after the step 13 pass (Oct 31). _Checked in headless Chrome_ means automated checks at an emulated 360px / 390px phone and 1280px desktop; items marked **device** still need a real phone or a person.
+
+- [x] `npm test` passes, including new tests for lit candles, week timing and status, the view preference, compact date formats, the new schema fields and the stable-ID guard. _(106 tests)_
+- [x] `npm run build` passes, and fails on an invalid or duplicate `candle`. _(validation stops with "candle "1" is already used by week "week-1"")_
+- [x] With nothing saved, the app opens to the Wreath view. `?view=list` shows the Week list without changing the saved choice. The switcher's choice survives a reload. _(headless Chrome)_
+- [x] `?date=2026-12-08` shows "Dec 6 – 12", "Week 2 · Peace", 2 candles lit, Hope done (if checked), Peace "Now", and Joy, Love and Jesus with their dates.
+- [x] Dec 24 lights the Christ candle. Nov 28 lights nothing. Dec 26 lights all five. _(unit tests and screenshots)_
+- [ ] Chips and "See this week's activities" open the week sheet. Escape and the close button close it, and focus returns to the opener. _(Opening, the close button and focus return checked in headless Chrome; **device/keyboard:** press Escape, and Tab through the open sheet.)_
+- [x] Checking every activity shows "You did it!" and a screen reader announces it. "Next" moves to the following week. _(The banner is in a `role="status"` region; hearing it with VoiceOver/TalkBack is listed below.)_
+- [x] Check-offs made in iteration 1 still show as done. _(unit tested; IDs and storage key unchanged)_
+- [x] The wreath home and week sheet match `docs/design/reference/*.html`, apart from the corrections in the design notes. _(Side by side at 390px. Known differences: darker check fill, "✓ Done" on chips, 44px switcher buttons that wrap under the longer app name at phone widths, 56px check tap area.)_
+- [x] The Week list behaves exactly as in iteration 1, restyled. _(week nav, focus on the week heading, check-offs, progress, More dialog and focus return)_
+- [x] No hex colors outside `tokens.css`, apart from the commented manifest values. _(plus the matching `theme-color` meta tag and the icon SVG, both commented)_
+- [x] Baloo 2 is served from the app's own origin; no third-party requests. _(only the app's own host requested)_
+- [x] With reduced motion on, nothing animates. _(emulated `prefers-reduced-motion: reduce`: no running animations on the home screen, sheet or celebration; **device:** confirm with the iOS/macOS setting.)_
+- [x] Primary buttons, check buttons and week chips are at least 56px; everything else tappable is at least 44px. Every icon has visible text. _(every button, link and summary measured on both views and the sheet)_
+- [x] Usable at 360px and on desktop, with no horizontal scroll at 200% text.
+- [ ] Lighthouse accessibility ≥ 95 on both views; no console errors; first load < 500 KB. _(No console errors or warnings; first load is about 70 KB compressed including the font. **Lighthouse** still to run in Chrome DevTools.)_
+- [x] The app shows as "Advent Devotional" (header, tab title, install name). Calendar subscribers see renamed events, not duplicates. _(event UIDs unchanged; the calendar is named "Advent Devotional")_
+- [ ] Android Back closes an open week sheet without leaving the app. _(Logic checked in headless Chrome with history.back(); **device:** Android Chrome and the installed app.)_
+- [ ] New icons look right on iPhone and Android Home Screens, including the maskable crop. _(**device**)_
+- [ ] Add to Home Screen works on an iPhone and an Android phone. Private browsing works without errors. _(**device**; storage failure paths are unit tested.)_
+
+### Still to check by hand
+
+1. **Keyboard (desktop):** Tab from the switcher through the chips to the main button; Enter opens the sheet; Tab stays inside it; Space toggles a check; Escape closes it and focus lands on the chip.
+2. **Screen reader:** VoiceOver (iPhone and Mac) and TalkBack if available. The wreath reads "Advent wreath, N candles lit"; chips read their state; check buttons say pressed or not pressed; finishing a week announces "You did it!"; the switcher says which view is selected.
+3. **Reduced motion:** turn on Reduce Motion on an iPhone or Mac and confirm the candles, sheet and celebration don't move.
+4. **Lighthouse:** accessibility on both views (`?view=wreath` and `?view=list`) in an incognito window.
+5. **iPhone and Android:** Add to Home Screen; check the icon, the lilac theme colour, that it opens to the wreath, that check-offs persist, and that the sheet clears the iPhone home bar.
+6. **Android Back:** with a week open, Back closes the sheet; a second Back leaves as normal. Try in Chrome and in the installed app.
+7. **Private browsing and Gmail's in-app browser:** no errors, check-offs work for the visit, and the view falls back to the Wreath after a reload.
+8. **Candle light-up:** watch the candles fade in on a real phone (about 1.2 seconds in all).
 
 ## Suggested order
 
