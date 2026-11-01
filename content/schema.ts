@@ -31,14 +31,27 @@ export interface Activity {
 
 export type SectionKind = 'advent' | 'christmas';
 
+/** The five wreath candles: four Advent candles (3 is the rose one) and the Christ candle. */
+export const CANDLE_SLOTS = ['1', '2', '3', '4', 'christ'] as const;
+export type CandleSlot = (typeof CANDLE_SLOTS)[number];
+
+/** Short labels longer than this may not fit five week chips on a 360px phone. */
+export const SHORT_TITLE_MAX = 7;
+
 export interface Week {
   id: string;
   kind: SectionKind;
   /** Short label, e.g. "Week 1". */
   label: string;
   title: string;
+  /** Short label for week chips, e.g. "Jesus". Defaults to `title`. */
+  shortTitle?: string;
   theme?: string;
   intro: string;
+  /** Which wreath candle this section lights (on its start date). */
+  candle?: CandleSlot;
+  /** Shown after "All N done." when every activity is checked. */
+  doneMessage?: string;
   /** Inclusive local dates, YYYY-MM-DD. */
   startDate: string;
   endDate: string;
@@ -78,8 +91,11 @@ const KNOWN_WEEK = new Set([
   'kind',
   'label',
   'title',
+  'shortTitle',
   'theme',
   'intro',
+  'candle',
+  'doneMessage',
   'startDate',
   'endDate',
   'activities',
@@ -141,6 +157,7 @@ export function validateSeason(data: unknown): ValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
   const seenIds = new Map<string, string>();
+  const seenCandles = new Map<string, string>();
 
   const checkId = (id: unknown, where: string) => {
     if (!isNonEmptyString(id)) {
@@ -204,6 +221,29 @@ export function validateSeason(data: unknown): ValidationResult {
     checkId(week.id, wName);
     requireStrings(week, ['label', 'title', 'intro'], wName);
     optionalString(week, 'theme', wName);
+    optionalString(week, 'shortTitle', wName);
+    optionalString(week, 'doneMessage', wName);
+
+    if (isNonEmptyString(week.shortTitle) && week.shortTitle.trim().length > SHORT_TITLE_MAX) {
+      warnings.push(
+        `${wName}: "shortTitle" is longer than ${SHORT_TITLE_MAX} letters and may not fit on a phone`,
+      );
+    }
+
+    if (week.candle !== undefined) {
+      if (!(CANDLE_SLOTS as readonly unknown[]).includes(week.candle)) {
+        errors.push(
+          `${wName}: "candle" must be one of ${CANDLE_SLOTS.map((c) => `"${c}"`).join(', ')}`,
+        );
+      } else {
+        const prev = seenCandles.get(week.candle as string);
+        if (prev) errors.push(`${wName}: candle "${week.candle}" is already used by ${prev}`);
+        else seenCandles.set(week.candle as string, wName);
+      }
+    }
+    if (week.kind === 'christmas' && week.candle !== 'christ') {
+      warnings.push(`${wName}: a "christmas" section usually lights the "christ" candle`);
+    }
 
     if (week.kind !== 'advent' && week.kind !== 'christmas') {
       errors.push(`${wName}: "kind" must be "advent" or "christmas"`);

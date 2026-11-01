@@ -27,6 +27,9 @@ All the words in the app live in one file: `content/advent-2026.json`.
 | `link`        | Optional `{ "href": "https://…", "label": "Link text" }`       |
 | `date`        | Optional `YYYY-MM-DD` to tie an activity to one day of a week  |
 | `id`          | Stable name the app uses for check-offs. **Never change it.**  |
+| `shortTitle`  | Optional short week name for the buttons under the wreath (e.g. `Jesus`). Keep it to 7 letters or fewer. Without it, the week's `title` is used |
+| `candle`      | Which wreath candle the week lights: `"1"`, `"2"`, `"3"` (the pink one), `"4"` or `"christ"`. Each candle can be used once |
+| `doneMessage` | Optional line shown when a family checks off every activity in the week, e.g. `The Hope candle is shining.` Keep it cheerful and short |
 
 Adding a new activity is fine. Give it a new, unique `id` (lowercase letters, numbers and
 dashes, e.g. `w2-bake-cookies`).

@@ -1,6 +1,6 @@
 {
   "id": "advent-2026",
-  "title": "Advent Follow-Along",
+  "title": "Advent Devotional",
   "notice": "Sample content for review. Final activities are coming soon.",
   "messages": {
     "beforeTitle": "Advent starts Sunday, November 29",
@@ -16,6 +16,8 @@
       "title": "Hope",
       "theme": "The prophecy candle",
       "intro": "Advent begins with waiting and hoping. This week, notice the small signs of light in the dark evenings.",
+      "candle": "1",
+      "doneMessage": "The Hope candle is shining.",
       "startDate": "2026-11-29",
       "endDate": "2026-12-05",
       "activities": [
@@ -50,6 +52,8 @@
       "title": "Peace",
       "theme": "The Bethlehem candle",
       "intro": "This week we make room for peace: in our homes, with our neighbors, and in quiet moments.",
+      "candle": "2",
+      "doneMessage": "The Peace candle is shining.",
       "startDate": "2026-12-06",
       "endDate": "2026-12-12",
       "activities": [
@@ -84,6 +88,8 @@
       "title": "Joy",
       "theme": "The shepherds' candle",
       "intro": "The pink candle reminds us that joy is near. This week, look for ways to share it.",
+      "candle": "3",
+      "doneMessage": "The Joy candle is shining.",
       "startDate": "2026-12-13",
       "endDate": "2026-12-19",
       "activities": [
@@ -112,6 +118,8 @@
       "title": "Love",
       "theme": "The angels' candle",
       "intro": "In the last days before Christmas, we remember that love came down to be with us.",
+      "candle": "4",
+      "doneMessage": "The Love candle is shining.",
       "startDate": "2026-12-20",
       "endDate": "2026-12-23",
       "activities": [
@@ -140,8 +148,11 @@
       "kind": "christmas",
       "label": "Christmas",
       "title": "Christ is born",
+      "shortTitle": "Jesus",
       "theme": "The Christ candle",
       "intro": "The waiting is over. Celebrate the birth of Jesus together.",
+      "candle": "christ",
+      "doneMessage": "The Christ candle is shining.",
       "startDate": "2026-12-24",
       "endDate": "2026-12-25",
       "activities": [
