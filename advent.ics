@@ -1,0 +1,94 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//advent-follow-along//advent-2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Advent Devotional: Weekly reminders
+X-WR-CALDESC:A reminder each Sunday of Advent and on Christmas Eve.
+REFRESH-INTERVAL;VALUE=DURATION:PT6H
+X-PUBLISHED-TTL:PT6H
+BEGIN:VEVENT
+UID:week-1@advent-follow-along
+DTSTAMP:20261119T230513Z
+DTSTART;VALUE=DATE:20261129
+DTEND;VALUE=DATE:20261130
+SUMMARY:Advent Week 1: Hope
+DESCRIPTION:Long before Jesus was born\, God promised he was coming. This w
+ eek\, we remember those promises and the hope they bring.\n\nThis week's a
+ ctivities: https://dclemmon.github.io/#week-1
+URL:https://dclemmon.github.io/#week-1
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Advent Week 1: Hope
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:week-2@advent-follow-along
+DTSTAMP:20261119T230513Z
+DTSTART;VALUE=DATE:20261206
+DTEND;VALUE=DATE:20261207
+SUMMARY:Advent Week 2: Peace
+DESCRIPTION:Mary and Joseph trusted God's plan\, even when it felt big and 
+ scary. This week\, we look for peace in a busy season.\n\nThis week's acti
+ vities: https://dclemmon.github.io/#week-2
+URL:https://dclemmon.github.io/#week-2
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Advent Week 2: Peace
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:week-3@advent-follow-along
+DTSTAMP:20261119T230513Z
+DTSTART;VALUE=DATE:20261213
+DTEND;VALUE=DATE:20261214
+SUMMARY:Advent Week 3: Joy
+DESCRIPTION:The pink candle reminds us that joy is near. This week\, we hea
+ r the good news with the shepherds and look for ways to share it.\n\nThis 
+ week's activities: https://dclemmon.github.io/#week-3
+URL:https://dclemmon.github.io/#week-3
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Advent Week 3: Joy
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:week-4@advent-follow-along
+DTSTAMP:20261119T230513Z
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
+SUMMARY:Advent Week 4: Love
+DESCRIPTION:The Wise Men follow the star to find Jesus. This week\, we reme
+ mber that Love always wins\, even on the longest\, darkest nights.\n\nThis
+  week's activities: https://dclemmon.github.io/#week-4
+URL:https://dclemmon.github.io/#week-4
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Advent Week 4: Love
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:christmas@advent-follow-along
+DTSTAMP:20261119T230513Z
+DTSTART;VALUE=DATE:20261224
+DTEND;VALUE=DATE:20261226
+SUMMARY:Advent: Christ is born
+DESCRIPTION:The waiting is over. Jesus is born! Celebrate together.\n\nThis
+  week's activities: https://dclemmon.github.io/#christmas
+URL:https://dclemmon.github.io/#christmas
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Advent: Christ is born
+TRIGGER:PT9H
+END:VALARM
+END:VEVENT
+END:VCALENDAR
